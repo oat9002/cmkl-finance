@@ -1,0 +1,6 @@
+
+server/example/
+
+server/node_modules/
+
+server/yarn-error\.log
