@@ -1,13 +1,20 @@
-import express = require('express');
+import * as express from 'express';
+import ReportService from './report/ReportService';
 
 // Create a new express application instance
-const app: express.Application = express();
-const port: Number = 3000;
+const app = express();
+const port = 3000;
+const reportService = new ReportService();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get('/', (req, res): void => {
+    res.send('Hello World!');
 });
 
-app.listen(port, () => {
-  console.log(`App listening on port ${port}!`);
+app.get('/GetPaymentLogDetails', (req, res): void => {
+    reportService.getPaymentLogDetails();
+    res.send('GetPaymentLogDetails');
+});
+
+app.listen(port, (): void => {
+    console.log(`App listening on port ${port}!`);
 }); 

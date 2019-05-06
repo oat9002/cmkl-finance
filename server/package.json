@@ -9,9 +9,13 @@
     "dev": "ts-node-dev --respawn --transpileOnly ./index.ts"
   },
   "dependencies": {
+    "airtable": "^0.5.10",
+    "dotenv": "^8.0.0",
     "express": "^4.16.4"
   },
   "devDependencies": {
+    "@types/airtable": "^0.5.0",
+    "@types/dotenv": "^6.1.1",
     "@types/express": "^4.16.1",
     "@typescript-eslint/eslint-plugin": "^1.7.0",
     "@typescript-eslint/parser": "^1.7.0",
