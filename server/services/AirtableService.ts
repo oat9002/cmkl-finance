@@ -1,7 +1,6 @@
 import IAirtableService, { AirtableRequest, AirtableResponse } from "./interfaces/AirtableService";
 import IServiceConnector from "./interfaces/ServiceConnector";
 import ServiceConnector from "./ServiceConnector";
-import PaymentLog from "../models/PaymentLog";
 
 class AirtableService implements IAirtableService {
     private airtable: any;
