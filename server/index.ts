@@ -1,5 +1,5 @@
 import * as express from 'express';
-import ReportService from './report/ReportService';
+import ReportService from './services/report/ReportService';
 
 // Create a new express application instance
 const app = express();
