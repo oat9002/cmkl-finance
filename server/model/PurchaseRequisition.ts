@@ -1,7 +1,7 @@
 import AirtableUser from "./AirtableUser";
 
 interface PurchaseRequisition {
-    purchaseRequisitionId: number;
+    purchaseRequisitionId: string;
     account: string[];
     type: PurchaseRequisitionType;
     request: string;
