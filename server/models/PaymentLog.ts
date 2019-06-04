@@ -36,9 +36,9 @@ interface PaymentLog {
     notes: string;
     createdTime: Date;
     batchPayments: string;
-    fiscalYear: Date;
+    fiscalYear: string;
 }
 
-type PaymentType = 'Direct Credit (DCT)'
+type PaymentType = "Direct Credit (DCT)";
 
 export default PaymentLog;
