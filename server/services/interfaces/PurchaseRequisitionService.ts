@@ -1,7 +1,8 @@
 import PurchaseRequisition from "../../models/PurchaseRequisition";
+import { AirtableRequest } from "./AirtableService";
 
 interface PurchaseRequisitionService {
-    getPurchaseRequsition(): { purchaseRequisitions: PurchaseRequisition[]; fetchNextPage: () => PurchaseRequisition[] };
+    getPurchaseRequsition(request: AirtableRequest, page?: number): Promise<PurchaseRequisition[]>;
 }
 
 export default PurchaseRequisitionService;

@@ -1,7 +1,7 @@
 interface AirtableService {
-    getPaymentLog(request: AirtableRequest): Promise<AirtableResponse>;
-    getPurchaseItems(request: AirtableRequest): Promise<AirtableResponse>;
-    getPurchaseRequisition(request: AirtableRequest): Promise<AirtableResponse>;
+    getPaymentLog(request: AirtableRequest): any;
+    getPurchaseItems(request: AirtableRequest): any;
+    getPurchaseRequisition(request: AirtableRequest): any;
 }
 
 interface AirtableRequest {
@@ -12,12 +12,7 @@ interface AirtableRequest {
     sort?: Sort;
 }
 
-interface AirtableResponse {
-    records: any;
-    fetchNextPage(): any;
-}
-
 type Sort = "asc" | "asc";
 
-export { AirtableService, AirtableRequest, AirtableResponse };
+export { AirtableService, AirtableRequest };
 export default AirtableService;

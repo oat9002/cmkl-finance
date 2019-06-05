@@ -12,6 +12,7 @@ module.exports = {
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
         "semi": ["error", "always"],
         "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-explicit-any": "off",
         "quotes": ["error", "double", { "allowTemplateLiterals": true }]
     },
 };

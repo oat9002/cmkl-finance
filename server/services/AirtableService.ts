@@ -1,4 +1,4 @@
-import IAirtableService, { AirtableRequest, AirtableResponse } from "./interfaces/AirtableService";
+import IAirtableService, { AirtableRequest } from "./interfaces/AirtableService";
 import IServiceConnector from "./interfaces/ServiceConnector";
 import ServiceConnector from "./ServiceConnector";
 
@@ -11,15 +11,15 @@ class AirtableService implements IAirtableService {
         this.airtable = serviceConnector.getAirtable();
     }
 
-    public getPaymentLog(request: AirtableRequest): Promise<AirtableResponse> {
+    public getPaymentLog(request: AirtableRequest): any {
         return this.airtable("Payment Log").select(request);
     }
 
-    public getPurchaseItems(request: AirtableRequest): Promise<AirtableResponse> {
+    public getPurchaseItems(request: AirtableRequest): any {
         return this.airtable("Purchase Items").select(request);
     }
 
-    public getPurchaseRequisition(request: AirtableRequest): Promise<AirtableResponse> {
+    public getPurchaseRequisition(request: AirtableRequest): any {
         return this.airtable("Purchase Requisition").select(request);
     }
 }

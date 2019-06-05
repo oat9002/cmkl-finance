@@ -6,7 +6,8 @@
   "author": "oat9002",
   "license": "Apache-2.0",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpileOnly ./index.ts"
+    "dev": "ts-node-dev --respawn --transpileOnly ./index.ts",
+    "debug": "NODE_ENV=development tsnd --inspect --respawn ./index.ts"
   },
   "dependencies": {
     "airtable": "^0.6.0",
