@@ -1,22 +1,22 @@
-import IPurchaseRequisitionService from "./interfaces/PurchaseRequisitionService";
-import PurchaseRequisition from "../models/PurchaseRequisition";
-import IAirtableService, { AirtableRequest } from "./interfaces/AirtableService";
+import IPurchaseItemService from "./interfaces/PurchaseItemService";
+import { AirtableRequest } from "./interfaces/AirtableService";
+import PurchaseItem from "../models/PurchanseItem";
 import AirtableService from "./AirtableService";
+import IAirtableService from "./interfaces/AirtableService";
 
-
-class PurchaseRequisitionService implements IPurchaseRequisitionService {
+class PurchaseItemService implements IPurchaseItemService {
     private airtableService: IAirtableService;
 
     public constructor() {
         this.airtableService = new AirtableService();
     }
 
-    public async getPurchaseRequsition(request: AirtableRequest, page?: number): Promise<PurchaseRequisition[]> {
+    public getPurchaseItems(request: AirtableRequest, page?: number): Promise<PurchaseItem[]> {
         let toReturn = [];
 
         return new Promise(async (resolve, reject): Promise<void> => {
             try {
-                const response = await this.airtableService.getPurchaseRequisition(request);
+                const response = await this.airtableService.getPurchaseItems(request);
 
                 if (!response) {
                     resolve(toReturn);
@@ -34,7 +34,7 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
                         }
 
                         if (page === 0) {
-                            toReturn = records.map((record: any): PurchaseRequisition => this.mapPurchaseRequisition(record));
+                            toReturn = records.map((record: any): PurchaseItem => this.mapPurchaseItem(record));
                             resolve(toReturn);
                         }
                     }, (): void => resolve(toReturn));
@@ -42,7 +42,7 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
                 else {
                     const records = await response.all();
 
-                    toReturn = records.map((record: any): PurchaseRequisition => this.mapPurchaseRequisition(record));
+                    toReturn = records.map((record: any): PurchaseItem => this.mapPurchaseItem(record));
                     resolve(toReturn);
                 }
             }
@@ -52,13 +52,13 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
         });
     }
 
-    private mapPurchaseRequisition(record: any): PurchaseRequisition {
+    private mapPurchaseItem(record: any): PurchaseItem {
         try {
-            const toReturn: PurchaseRequisition = {
-                purchaseRequisitionId: record.fields["Purchase Request ID"]
+            const toReturn = {
+                purchaseId: record.fields["Purchase ID"]
             };
 
-            return toReturn;
+            return toReturn as PurchaseItem;
         }
         catch (err) {
             console.log(err);
@@ -68,4 +68,4 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
     }
 }
 
-export default PurchaseRequisitionService;
+export default PurchaseItemService;

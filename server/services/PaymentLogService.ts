@@ -1,22 +1,21 @@
-import IPurchaseRequisitionService from "./interfaces/PurchaseRequisitionService";
-import PurchaseRequisition from "../models/PurchaseRequisition";
+import IPaymentLogService from "./interfaces/PaymentLogService";
 import IAirtableService, { AirtableRequest } from "./interfaces/AirtableService";
 import AirtableService from "./AirtableService";
+import PaymentLog from "../models/PaymentLog";
 
-
-class PurchaseRequisitionService implements IPurchaseRequisitionService {
+class PaymentLogService implements IPaymentLogService {
     private airtableService: IAirtableService;
 
     public constructor() {
         this.airtableService = new AirtableService();
     }
 
-    public async getPurchaseRequsition(request: AirtableRequest, page?: number): Promise<PurchaseRequisition[]> {
+    public getPaymetLogs(request: AirtableRequest, page?: number): Promise<PaymentLog[]> {
         let toReturn = [];
 
         return new Promise(async (resolve, reject): Promise<void> => {
             try {
-                const response = await this.airtableService.getPurchaseRequisition(request);
+                const response = await this.airtableService.getPaymentLog(request);
 
                 if (!response) {
                     resolve(toReturn);
@@ -34,7 +33,7 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
                         }
 
                         if (page === 0) {
-                            toReturn = records.map((record: any): PurchaseRequisition => this.mapPurchaseRequisition(record));
+                            toReturn = records.map((record: any): PaymentLog => this.mapPaymentLog(record));
                             resolve(toReturn);
                         }
                     }, (): void => resolve(toReturn));
@@ -42,7 +41,7 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
                 else {
                     const records = await response.all();
 
-                    toReturn = records.map((record: any): PurchaseRequisition => this.mapPurchaseRequisition(record));
+                    toReturn = records.map((record: any): PaymentLog => this.mapPaymentLog(record));
                     resolve(toReturn);
                 }
             }
@@ -52,13 +51,13 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
         });
     }
 
-    private mapPurchaseRequisition(record: any): PurchaseRequisition {
+    private mapPaymentLog(record: any): PaymentLog {
         try {
-            const toReturn: PurchaseRequisition = {
-                purchaseRequisitionId: record.fields["Purchase Request ID"]
+            const toReturn = {
+                purchaseId: record.fields["Purchase Request ID"]
             };
 
-            return toReturn;
+            return toReturn as PaymentLog;
         }
         catch (err) {
             console.log(err);
@@ -66,6 +65,7 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
             throw err;
         }
     }
+
 }
 
-export default PurchaseRequisitionService;
+export default PaymentLogService;
