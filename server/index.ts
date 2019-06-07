@@ -1,18 +1,40 @@
-import * as express from 'express';
-import ReportService from './services/report/ReportService';
+import * as express from "express";
+import PurchaseRequisitionService from "./services/PurchaseRequisitionService";
+import IPurchaseRequisitionService from "./services/interfaces/PurchaseRequisitionService";
+import IPurchaseItemService from "./services/interfaces/PurchaseItemsService";
+import PurchaseItemsService from "./services/PurchaseItemsService";
+import { requestValidation } from "./utils/Utils";
+import PaymentLogService from "./services/PaymentLogService";
+import IPaymentLogService from "./services/interfaces/PaymentLogService";
 
 // Create a new express application instance
 const app = express();
 const port = 3000;
-const reportService = new ReportService();
 
-app.get('/', (req, res): void => {
-    res.send('Hello World!');
+const purchaseRequisitionService: IPurchaseRequisitionService = new PurchaseRequisitionService();
+const purchaseItemsService: IPurchaseItemService = new PurchaseItemsService();
+const paymentLogService: IPaymentLogService = new PaymentLogService();
+
+app.use(express.json());
+app.use(requestValidation);
+
+app.get("/", (req, res): void => {
+    res.send("Hello World!");
 });
 
-app.get('/GetPaymentLogDetails', (req, res): void => {
-    reportService.getPaymentLogDetails();
-    res.send('GetPaymentLogDetails');
+app.post("/getPurchaseRequisitions", async (req, res): Promise<void> => {
+    const pr = await purchaseRequisitionService.getPurchaseRequsition(req.body);
+    res.send(pr);
+});
+
+app.post("/getPurchaseItems", async (req, res): Promise<void> => {
+    const pi = await purchaseItemsService.getPurchaseItems(req.body);
+    res.send(pi);
+});
+
+app.get("/getPaymentLogs", async (req, res): Promise<void> => {
+    const pl = await paymentLogService.getPaymetLogs(req.body);
+    res.send(pl);
 });
 
 app.listen(port, (): void => {

@@ -54,11 +54,20 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
 
     private mapPurchaseRequisition(record: any): PurchaseRequisition {
         try {
-            const toReturn: PurchaseRequisition = {
-                purchaseRequisitionId: record.fields["Purchase Request ID"]
+            const toReturn = {
+                purchaseRequisitionId: record.fields["Purchase Request ID"],
+                request: record.fields["Request"],
+                reasonsForRequest: record.fields["Resons for request"],
+                urgency: record.fields["Urgency"],
+                createdTime: record.fields["Created Time"],
+                thbQuoteAmount: record.fields["THB Quote Amount"],
+                paymentDue: record.fields["Payment Due"],
+                paymentType: record.fields["payment Type"],
+                enteredBy: record.fields["Entered By"],
+                requestBy: record.fields["Request By"]
             };
 
-            return toReturn;
+            return toReturn as PurchaseRequisition;
         }
         catch (err) {
             console.log(err);

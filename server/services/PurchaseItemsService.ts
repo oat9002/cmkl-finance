@@ -1,10 +1,10 @@
-import IPurchaseItemService from "./interfaces/PurchaseItemService";
+import IPurchaseItemsService from "./interfaces/PurchaseItemsService";
 import { AirtableRequest } from "./interfaces/AirtableService";
 import PurchaseItem from "../models/PurchanseItem";
 import AirtableService from "./AirtableService";
 import IAirtableService from "./interfaces/AirtableService";
 
-class PurchaseItemService implements IPurchaseItemService {
+class PurchaseItemsService implements IPurchaseItemsService {
     private airtableService: IAirtableService;
 
     public constructor() {
@@ -55,7 +55,14 @@ class PurchaseItemService implements IPurchaseItemService {
     private mapPurchaseItem(record: any): PurchaseItem {
         try {
             const toReturn = {
-                purchaseId: record.fields["Purchase ID"]
+                purchaseId: record.fields["Purchase ID"],
+                paymentDueDate: record.fields["Payment Due Date"],
+                account: record.fields["Account"],
+                thbInvoiceAmount: record.fields["THB Invoice Amount"],
+                category: record.fields["Category"],
+                enteredBy: record.fields["Entered By"],
+                requestBy: record.fields["Request By"],
+                createdTime: record.fields["Created Time"]
             };
 
             return toReturn as PurchaseItem;
@@ -68,4 +75,4 @@ class PurchaseItemService implements IPurchaseItemService {
     }
 }
 
-export default PurchaseItemService;
+export default PurchaseItemsService;
