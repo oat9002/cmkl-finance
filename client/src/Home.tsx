@@ -1,36 +1,34 @@
 import React from "react";
-import { Layout, Dropdown, Menu, Icon } from "antd";
+import { Layout, Dropdown, Icon, Tabs } from "antd";
 import Header from "./components/Header";
 import PurchaseRequisition from "./components/PurchaseRequisition";
 
 const { Footer, Content } = Layout;
-const MenuType = {
+const { TabPane } = Tabs;
+const tabType = {
     purchaseRequisitions: "Purchase Requisitions",
     purchaseItems: "Purchase Items"
 }
 
 const Home: React.FC = () => {
-    const [selectedMenu, setSelectedMenu] = React.useState(MenuType.purchaseRequisitions);
+    const [selectedMenu, setSelectedMenu] = React.useState(tabType.purchaseRequisitions);
 
-    const renderContentDropdownMenu = (
-        <Menu>
-            <Menu.Item>
-                Purchase Requisitions
-            </Menu.Item>
-            <Menu.Item>
-                Purchase Items
-            </Menu.Item>
-        </Menu>
+    const renderContentTabs = () => (
+        <Tabs defaultActiveKey={tabType.purchaseRequisitions}>
+            <TabPane tab={tabType.purchaseRequisitions} key={tabType.purchaseRequisitions}>
+                <PurchaseRequisition />
+            </TabPane>
+            <TabPane tab={tabType.purchaseItems} key={tabType.purchaseItems}>
+                {tabType.purchaseItems}
+            </TabPane>
+        </Tabs>
     );
 
     return (
         <React.Fragment>
             <Header />
             <Content>
-                <Dropdown overlay={renderContentDropdownMenu}>
-                    <span>{selectedMenu} <Icon type="down" /></span>
-                </Dropdown>
-                <PurchaseRequisition />
+                {renderContentTabs()}
             </Content>
             <Footer>
                 Footer

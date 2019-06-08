@@ -1,7 +1,9 @@
 import React from "react";
 import Axios from "axios";
 import { httpStatus } from "../utils/Utils";
-import { Table } from "antd";
+import { Table, Tag } from "antd";
+import Moment from "moment";
+import { Urgency } from "../models/PurchaseRequisition";
 
 interface HomeState {
     data: object[];
@@ -10,6 +12,7 @@ interface HomeState {
 class PurchaseRequisition extends React.Component<any, HomeState> {
     constructor(props: any) {
         super(props);
+        Moment.locale("th");
 
         this.state = {
             data: []
@@ -57,6 +60,31 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
                 title: "Urgency",
                 dataIndex: "urgency",
                 key: "urgency",
+                render: (urgency?: Urgency) => {
+                    if (!urgency) {
+                        return null;
+                    }
+
+                    let color = "cyan";
+                    switch (urgency) {
+                        case "Medium Urgency":
+                            color = "yellow"
+                            break;
+                        case "Mission Critical":
+                            color = "orange"
+                            break;
+                        case "Top Urgency":
+                            color = "red"
+                    }
+
+                    return (
+                        <span>
+                            <Tag color={color}>
+                                {urgency}
+                            </Tag>
+                        </span>
+                    );
+                },
             },
             {
                 title: "Due Date",
@@ -72,6 +100,19 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
                 title: "Entered By",
                 dataIndex: "enteredBy",
                 key: "enteredBy",
+                render: (name?: string) => {
+                    if (!name) {
+                        return null;
+                    }
+
+                    return (
+                        <span>
+                            <Tag color="blue">
+                                {name}
+                            </Tag>
+                        </span>
+                    );
+                },
             },
             {
                 title: "Action",
@@ -93,9 +134,12 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
         }
 
         toReturn.push(...prItems.map((item: any, idx: number) => {
+            console.log(item);
             return {
                 ...item,
-                enteredBy: item.name,
+                createdTime: item.createdTime && Moment(item.createdTime).format("DD/MM/YYYY hh:mm"),
+                paymentDue: item.paymentDue && Moment(item.paymentDue).format("DD/MM/YYYY"),
+                enteredBy: item.enteredBy && item.enteredBy.name,
             }
         }));
 
@@ -105,7 +149,7 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
     public render() {
         return (
             <div>
-                <Table columns={this.getTableHeader()} dataSource={this.state.data} />
+                <Table columns={this.getTableHeader()} dataSource={this.state.data} scroll={{ x: 240 }} />
             </div>
         );
     }
