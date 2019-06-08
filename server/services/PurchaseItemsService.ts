@@ -3,12 +3,14 @@ import { AirtableRequest } from "./interfaces/AirtableService";
 import PurchaseItem from "../models/PurchanseItem";
 import AirtableService from "./AirtableService";
 import IAirtableService from "./interfaces/AirtableService";
+import * as Moment from "moment";
 
 class PurchaseItemsService implements IPurchaseItemsService {
     private airtableService: IAirtableService;
 
     public constructor() {
         this.airtableService = new AirtableService();
+        Moment.locale("th");
     }
 
     public getPurchaseItems(request: AirtableRequest, page?: number): Promise<PurchaseItem[]> {
@@ -47,6 +49,7 @@ class PurchaseItemsService implements IPurchaseItemsService {
                 }
             }
             catch (err) {
+                console.log(err);
                 reject(err);
             }
         });
@@ -56,13 +59,13 @@ class PurchaseItemsService implements IPurchaseItemsService {
         try {
             const toReturn = {
                 purchaseId: record.fields["Purchase ID"],
-                paymentDueDate: record.fields["Payment Due Date"],
+                paymentDueDate: Moment(record.fields["Payment Due Date"], "D MMMM YYYY").toDate(),
                 account: record.fields["Account"],
                 thbInvoiceAmount: record.fields["THB Invoice Amount"],
                 category: record.fields["Category"],
                 enteredBy: record.fields["Entered By"],
                 requestBy: record.fields["Request By"],
-                createdTime: record.fields["Created Time"]
+                createdTime: Moment(record.fields["Created Time"], "D MMMM YYYY h:mma").toDate(),
             };
 
             return toReturn as PurchaseItem;

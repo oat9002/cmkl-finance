@@ -3,7 +3,7 @@ import PurchaseRequisitionService from "./services/PurchaseRequisitionService";
 import IPurchaseRequisitionService from "./services/interfaces/PurchaseRequisitionService";
 import IPurchaseItemService from "./services/interfaces/PurchaseItemsService";
 import PurchaseItemsService from "./services/PurchaseItemsService";
-import { requestValidation } from "./utils/Utils";
+import { requestValidation, httpStatus } from "./utils/Utils";
 import PaymentLogService from "./services/PaymentLogService";
 import IPaymentLogService from "./services/interfaces/PaymentLogService";
 
@@ -23,13 +23,23 @@ app.get("/", (req, res): void => {
 });
 
 app.post("/getPurchaseRequisitions", async (req, res): Promise<void> => {
-    const pr = await purchaseRequisitionService.getPurchaseRequsition(req.body);
-    res.send(pr);
+    try {
+        const pr = await purchaseRequisitionService.getPurchaseRequsition(req.body);
+        res.send(pr);
+    }
+    catch (err) {
+        res.status(httpStatus.internalServerError).send([]);
+    }
 });
 
 app.post("/getPurchaseItems", async (req, res): Promise<void> => {
-    const pi = await purchaseItemsService.getPurchaseItems(req.body);
-    res.send(pi);
+    try {
+        const pi = await purchaseItemsService.getPurchaseItems(req.body);
+        res.send(pi);
+    }
+    catch (err) {
+        res.status(httpStatus.internalServerError).send([]);
+    }
 });
 
 app.get("/getPaymentLogs", async (req, res): Promise<void> => {

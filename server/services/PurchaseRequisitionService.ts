@@ -2,13 +2,14 @@ import IPurchaseRequisitionService from "./interfaces/PurchaseRequisitionService
 import PurchaseRequisition from "../models/PurchaseRequisition";
 import IAirtableService, { AirtableRequest } from "./interfaces/AirtableService";
 import AirtableService from "./AirtableService";
-
+import * as Moment from "moment";
 
 class PurchaseRequisitionService implements IPurchaseRequisitionService {
     private airtableService: IAirtableService;
 
     public constructor() {
         this.airtableService = new AirtableService();
+        Moment.locale("th");
     }
 
     public async getPurchaseRequsition(request: AirtableRequest, page?: number): Promise<PurchaseRequisition[]> {
@@ -59,9 +60,9 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
                 request: record.fields["Request"],
                 reasonsForRequest: record.fields["Resons for request"],
                 urgency: record.fields["Urgency"],
-                createdTime: record.fields["Created Time"],
+                createdTime: Moment(record.fields["Created Time"], "D MMMM YYYY h:mma").toDate(),
                 thbQuoteAmount: record.fields["THB Quote Amount"],
-                paymentDue: record.fields["Payment Due"],
+                paymentDue: Moment(record.fields["Payment Due"], "YYYY/MM/D").toDate(),
                 paymentType: record.fields["payment Type"],
                 enteredBy: record.fields["Entered By"],
                 requestBy: record.fields["Request By"]
