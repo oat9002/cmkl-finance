@@ -6,15 +6,17 @@ import PurchaseItemsService from "./services/PurchaseItemsService";
 import { requestValidation, httpStatus } from "./utils/Utils";
 import PaymentLogService from "./services/PaymentLogService";
 import IPaymentLogService from "./services/interfaces/PaymentLogService";
+import * as cors from "cors";
 
 // Create a new express application instance
 const app = express();
-const port = 3000;
+const port = 4000;
 
 const purchaseRequisitionService: IPurchaseRequisitionService = new PurchaseRequisitionService();
 const purchaseItemsService: IPurchaseItemService = new PurchaseItemsService();
 const paymentLogService: IPaymentLogService = new PaymentLogService();
 
+app.use(cors());
 app.use(express.json());
 app.use(requestValidation);
 
