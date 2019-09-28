@@ -6,6 +6,8 @@ import PurchaseItemsService from "./services/PurchaseItemsService";
 import { requestValidation, httpStatus } from "./utils/Utils";
 import PaymentLogService from "./services/PaymentLogService";
 import IPaymentLogService from "./services/interfaces/PaymentLogService";
+import IEmailService from "./services/interfaces/EmailService";
+import EmailService from "./services/EmailService";
 import * as cors from "cors";
 
 // Create a new express application instance
@@ -15,6 +17,7 @@ const port = 4000;
 const purchaseRequisitionService: IPurchaseRequisitionService = new PurchaseRequisitionService();
 const purchaseItemsService: IPurchaseItemService = new PurchaseItemsService();
 const paymentLogService: IPaymentLogService = new PaymentLogService();
+const emailService: IEmailService = new EmailService();
 
 app.use(cors());
 app.use(express.json());
@@ -24,31 +27,53 @@ app.get("/", (req, res): void => {
     res.send("Hello World!");
 });
 
-app.post("/getPurchaseRequisitions", async (req, res): Promise<void> => {
-    try {
-        const pr = await purchaseRequisitionService.getPurchaseRequsition(req.body);
-        res.send(pr);
+app.post(
+    "/getPurchaseRequisitions",
+    async (req, res): Promise<void> => {
+        try {
+            const pr = await purchaseRequisitionService.getPurchaseRequsition(
+                req.body
+            );
+            res.send(pr);
+        } catch (err) {
+            res.status(httpStatus.internalServerError).send([]);
+        }
     }
-    catch (err) {
-        res.status(httpStatus.internalServerError).send([]);
-    }
-});
+);
 
-app.post("/getPurchaseItems", async (req, res): Promise<void> => {
-    try {
-        const pi = await purchaseItemsService.getPurchaseItems(req.body);
-        res.send(pi);
+app.post(
+    "/getPurchaseItems",
+    async (req, res): Promise<void> => {
+        try {
+            const pi = await purchaseItemsService.getPurchaseItems(req.body);
+            res.send(pi);
+        } catch (err) {
+            res.status(httpStatus.internalServerError).send([]);
+        }
     }
-    catch (err) {
-        res.status(httpStatus.internalServerError).send([]);
-    }
-});
+);
 
-app.get("/getPaymentLogs", async (req, res): Promise<void> => {
-    const pl = await paymentLogService.getPaymetLogs(req.body);
-    res.send(pl);
-});
+app.post(
+    "/sendEmail",
+    async (req, res): Promise<void> => {
+        try {
+            emailService.send(req.body.email, req.body.title, req.body.content);
+        } catch (err) {
+            res.status(httpStatus.internalServerError).send({
+                error: err
+            });
+        }
+    }
+);
+
+app.get(
+    "/getPaymentLogs",
+    async (req, res): Promise<void> => {
+        const pl = await paymentLogService.getPaymetLogs(req.body);
+        res.send(pl);
+    }
+);
 
 app.listen(port, (): void => {
     console.log(`App listening on port ${port}!`);
-}); 
+});
