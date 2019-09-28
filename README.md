@@ -12,6 +12,8 @@
     ```console
     $ cd ./server
     $ yarn
+    $ touch .env
+    $ vim .env # You can see which variable to add from .sample.env
     $ yarn run dev
     ```
 
