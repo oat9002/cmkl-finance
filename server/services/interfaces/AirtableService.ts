@@ -1,10 +1,13 @@
+import PurchaseItem from "../../models/PurchanseItem";
+
 interface AirtableService {
-    getPaymentLog(request: AirtableRequest): any;
-    getPurchaseItems(request: AirtableRequest): any;
-    getPurchaseRequisition(request: AirtableRequest): any;
+    getPaymentLog(request: AirtableFetchRequest): any;
+    getPurchaseItems(request: AirtableFetchRequest): any;
+    getPurchaseRequisition(request: AirtableFetchRequest): any;
+    insertPurchaseItems(request: AirtableInsertRequest<PurchaseItem>): any;
 }
 
-interface AirtableRequest {
+interface AirtableFetchRequest {
     fields?: string[];
     filterByFormula?: string;
     maxRecords?: number;
@@ -12,7 +15,11 @@ interface AirtableRequest {
     sort?: Sort;
 }
 
+interface AirtableInsertRequest<T> {
+    fileds: T[];
+}
+
 type Sort = "asc" | "asc";
 
-export { AirtableService, AirtableRequest };
+export { AirtableService, AirtableFetchRequest, AirtableInsertRequest };
 export default AirtableService;
