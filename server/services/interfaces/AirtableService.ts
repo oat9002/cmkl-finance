@@ -16,7 +16,7 @@ interface AirtableFetchRequest {
 }
 
 interface AirtableInsertRequest<T> {
-    fileds: T[];
+    fields: T[];
 }
 
 type Sort = "asc" | "asc";

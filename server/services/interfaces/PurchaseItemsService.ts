@@ -6,9 +6,7 @@ interface PurchaseItemsService {
         request: AirtableFetchRequest,
         page?: number
     ): Promise<PurchaseItem[]>;
-    insertPurchaseItems(
-        request: AirtableInsertRequest<PurchaseItem>
-    ): Promise<boolean>;
+    insertPurchaseItems(request: PurchaseItem[]): Promise<boolean>;
 }
 
 export default PurchaseItemsService;

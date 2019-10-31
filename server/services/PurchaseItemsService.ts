@@ -1,5 +1,8 @@
 import IPurchaseItemsService from "./interfaces/PurchaseItemsService";
-import { AirtableFetchRequest } from "./interfaces/AirtableService";
+import {
+    AirtableFetchRequest,
+    AirtableInsertRequest
+} from "./interfaces/AirtableService";
 import PurchaseItem from "../models/PurchanseItem";
 import AirtableService from "./AirtableService";
 import IAirtableService from "./interfaces/AirtableService";
@@ -69,10 +72,21 @@ class PurchaseItemsService implements IPurchaseItemsService {
         );
     }
 
-    public insertPurchaseItems(
-        request: AirtableFetchRequest<PurchaseItem>
+    public async insertPurchaseItems(
+        request: PurchaseItem[]
     ): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        try {
+            const inserReq: AirtableInsertRequest<PurchaseItem> = {
+                fields: request
+            };
+
+            await this.airtableService.insertPurchaseItems(inserReq);
+
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
     }
 
     private mapPurchaseItem(record: any): PurchaseItem {
