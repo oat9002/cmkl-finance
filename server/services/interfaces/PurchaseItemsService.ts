@@ -1,8 +1,14 @@
-import { AirtableRequest } from "./AirtableService";
+import { AirtableFetchRequest, AirtableInsertRequest } from "./AirtableService";
 import PurchaseItem from "../../models/PurchanseItem";
 
 interface PurchaseItemsService {
-    getPurchaseItems(request: AirtableRequest, page?: number): Promise<PurchaseItem[]>;
+    getPurchaseItems(
+        request: AirtableFetchRequest,
+        page?: number
+    ): Promise<PurchaseItem[]>;
+    insertPurchaseItems(
+        request: AirtableInsertRequest<PurchaseItem>
+    ): Promise<boolean>;
 }
 
 export default PurchaseItemsService;

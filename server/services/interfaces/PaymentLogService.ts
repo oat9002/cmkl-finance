@@ -1,8 +1,11 @@
-import { AirtableRequest } from "./AirtableService";
+import { AirtableFetchRequest } from "./AirtableService";
 import PaymentLog from "../../models/PaymentLog";
 
 interface PaymentLogService {
-    getPaymetLogs(request: AirtableRequest, page?: number): Promise<PaymentLog[]>;
+    getPaymetLogs(
+        request: AirtableFetchRequest,
+        page?: number
+    ): Promise<PaymentLog[]>;
 }
 
 export default PaymentLogService;
