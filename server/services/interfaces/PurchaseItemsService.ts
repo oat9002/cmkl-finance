@@ -1,4 +1,4 @@
-import { AirtableFetchRequest, AirtableInsertRequest } from "./AirtableService";
+import { AirtableFetchRequest } from "./AirtableService";
 import PurchaseItem from "../../models/PurchanseItem";
 
 interface PurchaseItemsService {
