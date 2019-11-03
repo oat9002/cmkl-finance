@@ -76,11 +76,11 @@ class PurchaseItemsService implements IPurchaseItemsService {
         request: PurchaseItem[]
     ): Promise<boolean> {
         try {
-            const inserReq: AirtableInsertRequest<PurchaseItem> = {
-                fields: request
-            };
+            // const inserReq: AirtableInsertRequest<PurchaseItem> = {
+            //     fields: this.mapRequestInsertPurchaseItem(request)
+            // };
 
-            await this.airtableService.insertPurchaseItems(inserReq);
+            await this.airtableService.insertPurchaseItems(this.mapRequestInsertPurchaseItem(request));
 
             return true;
         } catch (err) {
@@ -110,8 +110,24 @@ class PurchaseItemsService implements IPurchaseItemsService {
 
             return toReturn as PurchaseItem;
         } catch (err) {
-            console.log(err);
+            throw err;
+        }
+    }
 
+    private mapRequestInsertPurchaseItem(request: PurchaseItem[]) {
+        try {
+            return request.map(x => {
+                const toReturn = {};
+                toReturn["Purchase ID"] = x.purchaseId;
+                toReturn["Payment Due Date"] = x.paymentDueDate;
+                toReturn["Account"] = x.account;
+                toReturn["THB Invoice Amount"] = x.thbInvoiceAmount;
+                toReturn["Category"] = x.category;
+                toReturn["Entered By"] = x.enteredBy;
+                toReturn["Request By"] = x.requestBy;
+                toReturn["Created Time"] = Moment(Moment.now(), "D MMMM YYYY h:mma").toString();
+            });
+        } catch(err) {
             throw err;
         }
     }

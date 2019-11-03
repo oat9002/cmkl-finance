@@ -1,4 +1,4 @@
-import express from "express";
+import * as express from "express";
 import PurchaseRequisitionService from "../services/PurchaseRequisitionService";
 import IPurchaseRequisitionService from "../services/interfaces/PurchaseRequisitionService";
 import { httpStatus } from "../utils/Utils";

@@ -4,7 +4,7 @@ interface AirtableService {
     getPaymentLog(request: AirtableFetchRequest): any;
     getPurchaseItems(request: AirtableFetchRequest): any;
     getPurchaseRequisition(request: AirtableFetchRequest): any;
-    insertPurchaseItems(request: AirtableInsertRequest<PurchaseItem>): any;
+    insertPurchaseItems(request: any): any;
 }
 
 interface AirtableFetchRequest {

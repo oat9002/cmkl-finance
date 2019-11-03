@@ -1,4 +1,4 @@
-import express from "express";
+import * as express from "express";
 import PaymentLogService from "../services/PaymentLogService";
 import IPaymentLogService from "../services/interfaces/PaymentLogService";
 

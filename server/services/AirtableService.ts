@@ -28,7 +28,7 @@ class AirtableService implements IAirtableService {
     }
 
     public insertPurchaseItems(
-        request: AirtableInsertRequest<PurchaseItem>
+        request: any
     ): any {
         return this.airtable("Purchase Items").create(request);
     }
