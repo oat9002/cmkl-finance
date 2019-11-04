@@ -22,7 +22,7 @@ app.get("/", (req, res): void => {
 app.use("/purchaseItems", purhaseItemsController);
 app.use("/email", emailController);
 app.use("/paymentLog", paymentLogController);
-app.use("/paymentRequisitions", purchaseRequisitionsController);
+app.use("/purchaseRequisitions", purchaseRequisitionsController);
 
 app.listen(port, (): void => {
     console.log(`App listening on port ${port}!`);
