@@ -78,8 +78,6 @@ class PurchaseItemsService implements IPurchaseItemsService {
         try {
             const inserReq = this.mapRequestInsertPurchaseItem(request);
 
-            console.log(inserReq);
-
             await this.airtableService.insertPurchaseItems(inserReq);
 
             return true;
