@@ -1,12 +1,11 @@
 import IPurchaseItemsService from "./interfaces/PurchaseItemsService";
-import {
-    AirtableFetchRequest,
-    AirtableInsertRequest
-} from "./interfaces/AirtableService";
+import { AirtableInsertRequest } from "./interfaces/AirtableService";
 import PurchaseItem from "../models/PurchanseItem";
 import AirtableService from "./AirtableService";
 import IAirtableService from "./interfaces/AirtableService";
 import * as Moment from "moment";
+import InsertPurchaseItemsRequest from "../models/requests/InsertPurchaseItemsRequest";
+import GetPurchaseItemsRequest from "../models/requests/GetPurchaseItemsRequest";
 
 class PurchaseItemsService implements IPurchaseItemsService {
     private airtableService: IAirtableService;
@@ -16,17 +15,17 @@ class PurchaseItemsService implements IPurchaseItemsService {
         Moment.locale("th");
     }
 
-    public getPurchaseItems(
-        request: AirtableFetchRequest,
-        page?: number
+    public async getPurchaseItems(
+        request: GetPurchaseItemsRequest
     ): Promise<PurchaseItem[]> {
         let toReturn = [];
+        let page = request.page;
 
         return new Promise(
             async (resolve, reject): Promise<void> => {
                 try {
                     const response = await this.airtableService.getPurchaseItems(
-                        request
+                        request.option
                     );
 
                     if (!response) {
@@ -73,17 +72,18 @@ class PurchaseItemsService implements IPurchaseItemsService {
     }
 
     public async insertPurchaseItems(
-        request: PurchaseItem[]
-    ): Promise<boolean> {
+        request: InsertPurchaseItemsRequest
+    ): Promise<void> {
         try {
-            const inserReq = this.mapRequestInsertPurchaseItem(request);
+            const inserReq = this.mapRequestInsertPurchaseItem(
+                request.purchaseItems
+            );
 
             await this.airtableService.insertPurchaseItems(inserReq);
-
-            return true;
         } catch (err) {
             console.log(err);
-            return false;
+
+            throw err;
         }
     }
 
@@ -112,9 +112,11 @@ class PurchaseItemsService implements IPurchaseItemsService {
         }
     }
 
-    private mapRequestInsertPurchaseItem(request: PurchaseItem[]): object {
+    private mapRequestInsertPurchaseItem(
+        request: PurchaseItem[]
+    ): AirtableInsertRequest<PurchaseItem>[] {
         try {
-            return request.map((x): object => {
+            return request.map(x => {
                 const toReturn = {};
                 toReturn["Purchase ID"] = x.purchaseId;
                 toReturn["Payment Due Date"] = x.paymentDueDate;
@@ -131,7 +133,7 @@ class PurchaseItemsService implements IPurchaseItemsService {
                 return {
                     fields: toReturn
                 };
-            });
+            }) as AirtableInsertRequest<PurchaseItem>[];
         } catch (err) {
             throw err;
         }

@@ -4,7 +4,7 @@ interface AirtableService {
     getPaymentLog(request: AirtableFetchRequest): any;
     getPurchaseItems(request: AirtableFetchRequest): any;
     getPurchaseRequisition(request: AirtableFetchRequest): any;
-    insertPurchaseItems(request: any): any;
+    insertPurchaseItems(request: AirtableInsertRequest<PurchaseItem>[]): any;
 }
 
 interface AirtableFetchRequest {
@@ -16,7 +16,7 @@ interface AirtableFetchRequest {
 }
 
 interface AirtableInsertRequest<T> {
-    fields: T[];
+    fields: T;
 }
 
 type Sort = "asc" | "asc";

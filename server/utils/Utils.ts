@@ -1,3 +1,5 @@
+import { httpStatus } from "./Utils";
+import { httpStatus } from "./../../client/src/utils/Utils";
 import { Response, Request } from "express";
 
 export const httpStatus = {
@@ -5,7 +7,7 @@ export const httpStatus = {
     badRequest: 400,
     unAuthorize: 401,
     notFound: 404,
-    internalServerError: 500,
+    internalServerError: 500
 };
 
 export function requestValidation(req: Request, res: Response, next): void {
