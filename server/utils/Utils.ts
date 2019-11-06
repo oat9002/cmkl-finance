@@ -1,5 +1,3 @@
-import { httpStatus } from "./Utils";
-import { httpStatus } from "./../../client/src/utils/Utils";
 import { Response, Request } from "express";
 
 export const httpStatus = {
