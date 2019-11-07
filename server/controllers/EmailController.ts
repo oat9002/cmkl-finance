@@ -1,7 +1,7 @@
 import * as express from "express";
 import IEmailService from "../services/interfaces/EmailService";
 import EmailService from "../services/EmailService";
-import { httpStatus } from "../utils/Utils";
+import { httpStatus } from "../common/Utils";
 
 const emailController = express.Router();
 const emailService: IEmailService = new EmailService();

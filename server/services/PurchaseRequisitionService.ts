@@ -1,16 +1,21 @@
 import IPurchaseRequisitionService from "./interfaces/PurchaseRequisitionService";
 import PurchaseRequisition from "../models/PurchaseRequisition";
+import IMapHelper from "../common/interfaces/MapHelper";
 import IAirtableService, {
     AirtableFetchRequest
 } from "./interfaces/AirtableService";
-import AirtableService from "./AirtableService";
 import * as Moment from "moment";
 
 class PurchaseRequisitionService implements IPurchaseRequisitionService {
     private airtableService: IAirtableService;
+    private mapHelper: IMapHelper;
 
-    public constructor() {
-        this.airtableService = new AirtableService();
+    public constructor(
+        airtableService: IAirtableService,
+        mapHelper: IMapHelper
+    ) {
+        this.airtableService = airtableService;
+        this.mapHelper = mapHelper;
         Moment.locale("th");
     }
 
@@ -46,7 +51,9 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
                                 if (page === 0) {
                                     toReturn = records.map(
                                         (record: any): PurchaseRequisition =>
-                                            this.mapPurchaseRequisition(record)
+                                            this.mapHelper.mapAirtableRecToPurchaseRequisition(
+                                                record
+                                            )
                                     );
                                     resolve(toReturn);
                                 }
@@ -58,7 +65,9 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
 
                         toReturn = records.map(
                             (record: any): PurchaseRequisition =>
-                                this.mapPurchaseRequisition(record)
+                                this.mapHelper.mapAirtableRecToPurchaseRequisition(
+                                    record
+                                )
                         );
                         resolve(toReturn);
                     }
@@ -67,35 +76,6 @@ class PurchaseRequisitionService implements IPurchaseRequisitionService {
                 }
             }
         );
-    }
-
-    private mapPurchaseRequisition(record: any): PurchaseRequisition {
-        try {
-            const toReturn = {
-                purchaseRequisitionId: record.fields["Purchase Request ID"],
-                request: record.fields["Request"],
-                reasonsForRequest: record.fields["Resons for request"],
-                urgency: record.fields["Urgency"],
-                createdTime: Moment(
-                    record.fields["Created Time"],
-                    "D MMMM YYYY h:mma"
-                ).toDate(),
-                thbQuoteAmount: record.fields["THB Quote Amount"],
-                paymentDue: Moment(
-                    record.fields["Payment Due"],
-                    "YYYY/MM/D"
-                ).toDate(),
-                paymentType: record.fields["payment Type"],
-                enteredBy: record.fields["Entered By"],
-                requestBy: record.fields["Request By"]
-            };
-
-            return toReturn as PurchaseRequisition;
-        } catch (err) {
-            console.log(err);
-
-            throw err;
-        }
     }
 }
 

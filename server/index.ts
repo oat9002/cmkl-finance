@@ -5,7 +5,7 @@ import * as cors from "cors";
 import purhaseItemsController from "./controllers/PurchaseItemsController";
 import emailController from "./controllers/EmailController";
 import paymentLogController from "./controllers/PaymentLogController";
-import purchaseRequisitionsController from "./controllers/PurchaseRequisitions";
+import purchaseRequisitionsController from "./controllers/PurchaseRequisitionsController";
 
 // Create a new express application instance
 const app = express();
