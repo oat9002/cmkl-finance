@@ -2,6 +2,7 @@ import * as Moment from "moment";
 import { AirtableInsertRequest } from "../services/interfaces/AirtableService";
 import PurchaseItem from "../models/PurchanseItem";
 import IMapHelper from "./interfaces/MapHelper";
+import PurchaseRequisition from "../models/PurchaseRequisition";
 
 class MapHelper implements IMapHelper {
     public mapAirtableRecToPurchaseItem(record: any): PurchaseItem {
@@ -52,6 +53,37 @@ class MapHelper implements IMapHelper {
                 };
             }) as AirtableInsertRequest<PurchaseItem>[];
         } catch (err) {
+            throw err;
+        }
+    }
+
+    public mapAirtableRecToPurchaseRequisition(
+        record: any
+    ): PurchaseRequisition {
+        try {
+            const toReturn = {
+                purchaseRequisitionId: record.fields["Purchase Request ID"],
+                request: record.fields["Request"],
+                reasonsForRequest: record.fields["Resons for request"],
+                urgency: record.fields["Urgency"],
+                createdTime: Moment(
+                    record.fields["Created Time"],
+                    "D MMMM YYYY h:mma"
+                ).toDate(),
+                thbQuoteAmount: record.fields["THB Quote Amount"],
+                paymentDue: Moment(
+                    record.fields["Payment Due"],
+                    "YYYY/MM/D"
+                ).toDate(),
+                paymentType: record.fields["payment Type"],
+                enteredBy: record.fields["Entered By"],
+                requestBy: record.fields["Request By"]
+            };
+
+            return toReturn as PurchaseRequisition;
+        } catch (err) {
+            console.log(err);
+
             throw err;
         }
     }
