@@ -1,5 +1,5 @@
 import * as express from "express";
-import { httpStatus } from "../common/Utils";
+import { httpStatus } from "../common/Constants";
 import IPurchaseItemsService from "../services/interfaces/PurchaseItemsService";
 import PurchaseItemsService from "../services/PurchaseItemsService";
 import InsertPurchaseItemResponse from "../models/responses/InsertPurchaseItemsResponse";
