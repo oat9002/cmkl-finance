@@ -1,7 +1,7 @@
 import * as express from "express";
 import PurchaseRequisitionService from "../services/PurchaseRequisitionService";
 import IPurchaseRequisitionService from "../services/interfaces/PurchaseRequisitionService";
-import { httpStatus } from "../common/Utils";
+import { httpStatus } from "../common/Constants";
 import AirtableService from "../services/AirtableService";
 import MapHelper from "../common/MapHelper";
 

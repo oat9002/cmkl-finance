@@ -1,6 +1,7 @@
 import * as express from "express";
 import { json } from "express";
-import { requestValidation } from "./utils/Utils";
+import IRequestValidator from "./validators/interfaces/RequestValidator";
+import RequestValidator from "./validators/RequestValidator";
 import * as cors from "cors";
 import purhaseItemsController from "./controllers/PurchaseItemsController";
 import emailController from "./controllers/EmailController";
@@ -10,10 +11,11 @@ import purchaseRequisitionsController from "./controllers/PurchaseRequisitionsCo
 // Create a new express application instance
 const app = express();
 const port = 4000;
+const requestValidator: IRequestValidator = new RequestValidator();
 
 app.use(cors());
 app.use(json());
-//app.use(requestValidation);
+app.use(requestValidator.validate);
 
 app.get("/", (req, res): void => {
     res.send("Hello World!");
