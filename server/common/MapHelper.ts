@@ -3,6 +3,7 @@ import { AirtableInsertRequest } from "../services/interfaces/AirtableService";
 import PurchaseItem from "../models/PurchanseItem";
 import IMapHelper from "./interfaces/MapHelper";
 import PurchaseRequisition from "../models/PurchaseRequisition";
+import InsertPurchaseItemsRequest from "../models/requests/InsertPurchaseItemsRequest";
 
 class MapHelper implements IMapHelper {
     public mapAirtableRecToPurchaseItem(record: any): PurchaseItem {
@@ -31,27 +32,31 @@ class MapHelper implements IMapHelper {
     }
 
     public mapRequestToPurchaseItem(
-        request: PurchaseItem[]
-    ): AirtableInsertRequest<PurchaseItem>[] {
+        request: InsertPurchaseItemsRequest
+    ): AirtableInsertRequest<PurchaseItem> {
         try {
-            return request.map(x => {
-                const toReturn = {};
-                toReturn["Purchase ID"] = x.purchaseId;
-                toReturn["Payment Due Date"] = x.paymentDueDate;
-                toReturn["Account"] = x.account;
-                toReturn["THB Invoice Amount"] = x.thbInvoiceAmount;
-                toReturn["Category"] = x.category;
-                toReturn["Entered By"] = x.enteredBy;
-                toReturn["Request By"] = x.requestBy;
-                toReturn["Created Time"] = Moment(
-                    Moment.now(),
-                    "D MMMM YYYY h:mma"
-                ).toString();
+            const pi = {};
+            pi["Short Description"] = request.shortDescription;
+            //toReturn["Purchase ID"] = request.purchaseId;
+            pi["Payment Due Date"] = request.paymentDueDate;
+            pi["USD Invoice Amount"] = request.usdInvoiceAmount;
+            pi["THB Invoice Amount"] = request.thbInvoiceAmount;
+            pi["Payment Amount"] = request.paymentAmount;
+            pi["Request Justification"] = request.requestJustification;
+            pi["Entered By"] = request.enteredBy;
+            pi["Account Payable"] = request.accountPayable;
+            pi["Supplier"] = request.supplier;
+            pi["Reviewed By"] = request.reviewedBy;
+            pi["Created Time"] = Moment(
+                Moment.now(),
+                "D MMMM YYYY h:mma"
+            ).toString();
 
-                return {
-                    fields: toReturn
-                };
-            }) as AirtableInsertRequest<PurchaseItem>[];
+            const toReturn = {
+                fields: pi
+            };
+
+            return toReturn as AirtableInsertRequest<PurchaseItem>;
         } catch (err) {
             throw err;
         }
