@@ -1,4 +1,4 @@
-# **Welcome to cmkl finance system**
+# **Welcome to CMKL Finance System**
 
 ## **Prerequisite**
 
