@@ -5,7 +5,7 @@
 1. Node.js
 2. Yarn
 
-## **How to run this project?**
+## **How to run this project**
 
 1.  Start server
 
