@@ -27,10 +27,43 @@ export default interface PurchaseRequisition {
     period: Date;
 }
 
-type PurchaseRequisitionType = "Information & Data" | "Event Organizer" | "Gift and Souvenir" | "Training" | "Venue and Catering" | "Public Relation" | "Software" | "Office Supplies" | "Professional Services" | "Software Service Subscription" | "Materials" | "Professional Development" | "Travel" | "Publication";
+type PurchaseRequisitionType =
+    | "Information & Data"
+    | "Event Organizer"
+    | "Gift and Souvenir"
+    | "Training"
+    | "Venue and Catering"
+    | "Public Relation"
+    | "Software"
+    | "Office Supplies"
+    | "Professional Services"
+    | "Software Service Subscription"
+    | "Materials"
+    | "Professional Development"
+    | "Travel"
+    | "Publication";
 
-export type Urgency = "Low Urgency" | "Medium Urgency" | "Top Urgency" | "Mission Critical";
+type Urgency =
+    | "Low Urgency"
+    | "Medium Urgency"
+    | "Top Urgency"
+    | "Mission Critical";
 
-type ReviewStatus = "RFQ Complete" | "Purchased" | "Completed" | "Verified" | "Needs Review" | "Best Quote Selected" | "Approved" | "Payment Sent / Reimbursed" | "Void" | "Purchasing"
+type ReviewStatus =
+    | "RFQ Complete"
+    | "Purchased"
+    | "Completed"
+    | "Verified"
+    | "Needs Review"
+    | "Best Quote Selected"
+    | "Approved"
+    | "Payment Sent / Reimbursed"
+    | "Void"
+    | "Purchasing";
 
-type PaymentType = "Purchasing Card" | "Cheque" | "Expense" | "Direct Transfer" | "Travel Advance / Direct Transfer"
+type PaymentType =
+    | "Purchasing Card"
+    | "Cheque"
+    | "Expense"
+    | "Direct Transfer"
+    | "Travel Advance / Direct Transfer";

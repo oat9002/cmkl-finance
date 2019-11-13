@@ -26,7 +26,7 @@ export default interface PurchaseItem {
     accountantVerifiedBy: AirtableUser;
     approvedBy: AirtableUser;
     paymentMethod: PaymentMethod;
-    approvalStatus: AwtpprovalStatus;
+    approvalStatus: ApprovalStatus;
     approvalNote: string;
     accountingDate: string;
     payment: string;
@@ -50,5 +50,7 @@ export default interface PurchaseItem {
 }
 
 type Category = "Services" | "Hotel and Accommodation" | "Travel";
-type PaymentMethod = "Employee Advance" | "Travel Advance Clearing (accounting only/no payment)";
-type AwtpprovalStatus = "Paid";
+type PaymentMethod =
+    | "Employee Advance"
+    | "Travel Advance Clearing (accounting only/no payment)";
+type ApprovalStatus = "Paid";
