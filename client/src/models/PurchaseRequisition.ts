@@ -43,7 +43,7 @@ type PurchaseRequisitionType =
     | "Travel"
     | "Publication";
 
-type Urgency =
+export type Urgency =
     | "Low Urgency"
     | "Medium Urgency"
     | "Top Urgency"
