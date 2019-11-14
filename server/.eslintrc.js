@@ -1,18 +1,24 @@
 module.exports = {
-    parser: '@typescript-eslint/parser',  // Specifies the ESLint parser
+    parser: "@typescript-eslint/parser", // Specifies the ESLint parser
     extends: [
-        'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+        "plugin:@typescript-eslint/recommended" // Uses the recommended rules from the @typescript-eslint/eslint-plugin
     ],
     parserOptions: {
-        ecmaVersion: 2018,  // Allows for the parsing of modern ECMAScript features
-        sourceType: 'module',  // Allows for the use of imports
+        ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
+        sourceType: "module" // Allows for the use of imports
     },
     rules: {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-        "semi": ["error", "always"],
+        semi: ["error", "always"],
         "@typescript-eslint/no-var-requires": "off",
         "@typescript-eslint/no-explicit-any": "off",
-        "quotes": ["error", "double", { "allowTemplateLiterals": true }]
-    },
+        quotes: ["error", "double", { allowTemplateLiterals: true }],
+        "@typescript-eslint/explicit-function-return-type": [
+            "error",
+            {
+                allowTypedFunctionExpressions: true
+            }
+        ]
+    }
 };

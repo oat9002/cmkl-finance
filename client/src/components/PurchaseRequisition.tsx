@@ -1,9 +1,9 @@
 import React from "react";
 import Axios from "axios";
-import { httpStatus } from "../utils/Utils";
 import { Table, Tag } from "antd";
 import Moment from "moment";
 import { Urgency } from "../models/PurchaseRequisition";
+import { httpStatus } from "../commons/Constants";
 
 interface HomeState {
     data: object[];
@@ -24,16 +24,18 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
     }
 
     private async fecthPurchaseRequisition() {
-        const response = await Axios.post("http://localhost:4000/getPurchaseRequisitions",
+        const response = await Axios.post(
+            "http://localhost:4000/getPurchaseRequisitions",
             {
                 maxRecords: 10
             },
             {
                 headers: {
                     "Content-Type": "application/json",
-                    "x-auth": "cmklFinance",
+                    "x-auth": "cmklFinance"
                 }
-            });
+            }
+        );
 
         if (response.status !== httpStatus.okay) {
             return;
@@ -41,7 +43,7 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
 
         this.setState({
             data: this.mapTableData(response.data)
-        })
+        });
     }
 
     private getTableHeader() {
@@ -49,12 +51,12 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
             {
                 title: "ID",
                 dataIndex: "purchaseRequisitionId",
-                key: "purchaseRequisitionId",
+                key: "purchaseRequisitionId"
             },
             {
                 title: "Request",
                 dataIndex: "request",
-                key: "age",
+                key: "age"
             },
             {
                 title: "Urgency",
@@ -68,33 +70,31 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
                     let color = "cyan";
                     switch (urgency) {
                         case "Medium Urgency":
-                            color = "yellow"
+                            color = "yellow";
                             break;
                         case "Mission Critical":
-                            color = "orange"
+                            color = "orange";
                             break;
                         case "Top Urgency":
-                            color = "red"
+                            color = "red";
                     }
 
                     return (
                         <span>
-                            <Tag color={color}>
-                                {urgency}
-                            </Tag>
+                            <Tag color={color}>{urgency}</Tag>
                         </span>
                     );
-                },
+                }
             },
             {
                 title: "Due Date",
                 dataIndex: "paymentDue",
-                key: "paymentDue",
+                key: "paymentDue"
             },
             {
                 title: "Created Time",
                 dataIndex: "createdTime",
-                key: "createdTimem",
+                key: "createdTimem"
             },
             {
                 title: "Entered By",
@@ -107,12 +107,10 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
 
                     return (
                         <span>
-                            <Tag color="blue">
-                                {name}
-                            </Tag>
+                            <Tag color="blue">{name}</Tag>
                         </span>
                     );
-                },
+                }
             },
             {
                 title: "Action",
@@ -121,8 +119,8 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
                     <span>
                         <a href="#">Go to Airtable</a>
                     </span>
-                ),
-            },
+                )
+            }
         ];
     }
 
@@ -133,15 +131,21 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
             return toReturn;
         }
 
-        toReturn.push(...prItems.map((item: any, idx: number) => {
-            console.log(item);
-            return {
-                ...item,
-                createdTime: item.createdTime && Moment(item.createdTime).format("DD/MM/YYYY hh:mm"),
-                paymentDue: item.paymentDue && Moment(item.paymentDue).format("DD/MM/YYYY"),
-                enteredBy: item.enteredBy && item.enteredBy.name,
-            }
-        }));
+        toReturn.push(
+            ...prItems.map((item: any, idx: number) => {
+                console.log(item);
+                return {
+                    ...item,
+                    createdTime:
+                        item.createdTime &&
+                        Moment(item.createdTime).format("DD/MM/YYYY hh:mm"),
+                    paymentDue:
+                        item.paymentDue &&
+                        Moment(item.paymentDue).format("DD/MM/YYYY"),
+                    enteredBy: item.enteredBy && item.enteredBy.name
+                };
+            })
+        );
 
         return toReturn;
     }
@@ -149,7 +153,11 @@ class PurchaseRequisition extends React.Component<any, HomeState> {
     public render() {
         return (
             <div>
-                <Table columns={this.getTableHeader()} dataSource={this.state.data} scroll={{ x: 240 }} />
+                <Table
+                    columns={this.getTableHeader()}
+                    dataSource={this.state.data}
+                    scroll={{ x: 240 }}
+                />
             </div>
         );
     }
