@@ -3,7 +3,10 @@ export default interface AirtableFetchRequest {
     filterByFormula?: string;
     maxRecords?: number;
     pageSize?: number;
-    sort?: Sort;
+    sort?: Sort[];
 }
 
-type Sort = "desc" | "asc";
+interface Sort {
+    field: string;
+    direction: "desc" | "asc";
+}

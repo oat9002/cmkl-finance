@@ -1,12 +1,12 @@
 import * as Moment from "moment";
 import { AirtableInsertRequest } from "../services/interfaces/AirtableService";
 import PurchaseItem from "../models/PurchanseItem";
-import IMapHelper from "./interfaces/MapHelper";
+import MapHelper from "./interfaces/MapHelper";
 import PurchaseRequisition from "../models/PurchaseRequisition";
 import InsertPurchaseItemsRequest from "../models/requests/InsertPurchaseItemsRequest";
 import { getOrElse } from "./Utils";
 
-class MapHelper implements IMapHelper {
+class MapHelperImpl implements MapHelper {
     public mapAirtableRecToPurchaseItem(record: any): PurchaseItem {
         try {
             const toReturn = {
@@ -104,4 +104,4 @@ class MapHelper implements IMapHelper {
     }
 }
 
-export default MapHelper;
+export default MapHelperImpl;

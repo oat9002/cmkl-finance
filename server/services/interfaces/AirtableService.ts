@@ -12,14 +12,17 @@ interface AirtableFetchRequest {
     filterByFormula?: string;
     maxRecords?: number;
     pageSize?: number;
-    sort?: Sort;
+    sort?: Sort[];
 }
 
 interface AirtableInsertRequest<T> {
     fields: T;
 }
 
-type Sort = "desc" | "asc";
+interface Sort {
+    field: string;
+    direction: "desc" | "asc";
+}
 
 export { AirtableService, AirtableFetchRequest, AirtableInsertRequest };
 export default AirtableService;

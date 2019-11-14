@@ -13,7 +13,7 @@ export function mapPurchaseItemsToDataTable(data: PurchaseItem[]) {
             ...x,
             key: idx,
             paymentDueDate: Moment(x.paymentDueDate).format("DD/MM/YYYY"),
-            enteredBy: x.enteredBy.name || null
+            enteredBy: x.enteredBy.name || ""
         };
     });
 }
