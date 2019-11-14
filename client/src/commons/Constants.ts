@@ -3,5 +3,5 @@ export const httpStatus = {
     badRequest: 400,
     unAuthorize: 401,
     notFound: 404,
-    internalServerError: 500,
+    internalServerError: 500
 };

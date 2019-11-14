@@ -8,9 +8,10 @@ export function mapPurchaseItemsToDataTable(data: PurchaseItem[]) {
 
     Moment.locale("th");
 
-    return data.map(x => {
+    return data.map((x, idx) => {
         return {
             ...x,
+            key: idx,
             paymentDueDate: Moment(x.paymentDueDate).format("DD/MM/YYYY"),
             enteredBy: x.enteredBy.name || null
         };

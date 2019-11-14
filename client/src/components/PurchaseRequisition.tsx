@@ -1,9 +1,9 @@
 import React from "react";
 import Axios from "axios";
-import { httpStatus } from "../commons/Utils";
 import { Table, Tag } from "antd";
 import Moment from "moment";
 import { Urgency } from "../models/PurchaseRequisition";
+import { httpStatus } from "../commons/Constants";
 
 interface HomeState {
     data: object[];

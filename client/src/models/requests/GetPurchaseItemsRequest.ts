@@ -1,8 +1,6 @@
-import { AirtableFetchRequest } from "../../services/interfaces/AirtableService";
+import AirtableFetchRequest from "./AirtableFetchRequest";
 
-interface GetPurchaseItemsRequest {
+export default interface GetPurchaseItemsRequest {
     option: AirtableFetchRequest;
     page?: number;
 }
-
-export default GetPurchaseItemsRequest;

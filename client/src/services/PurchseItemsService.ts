@@ -1,8 +1,8 @@
-import { httpStatus } from "./../../../server/common/Constants";
 import axios from "../commons/Axios";
 import PurchaseItem from "../models/PurchanseItem";
 import { AxiosResponse } from "axios";
 import GetPurchaseItemsResponse from "../models/responses/GetPurchaseItemsResponse";
+import { httpStatus } from "../commons/Constants";
 
 const piAxios = axios("purchaseItems");
 
@@ -13,7 +13,9 @@ export async function getPurchaseItems(
         const response: AxiosResponse<GetPurchaseItemsResponse> = await piAxios.post(
             "getPurchaseItems",
             {
-                maxRecords: recordCount
+                option: {
+                    maxRecords: recordCount
+                }
             }
         );
 

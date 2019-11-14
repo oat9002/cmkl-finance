@@ -1,28 +1,30 @@
 import * as React from "react";
-import PurchaseItem from "../models/PurchanseItem";
 import { Tag, Table } from "antd";
 import { getPurchaseItems } from "../services/PurchseItemsService";
 import { mapPurchaseItemsToDataTable } from "../commons/helpers/PurchaseItemsHelper";
 
-const PurchaseItems: React.FC<any> = () => {
-    const [data, setData] = React.useState([] as PurchaseItem[]);
+function PurchaseItems() {
+    const [data, setData] = React.useState<any>([]);
 
     React.useEffect(() => {
-        getPurchaseItems(10).then(res => {
-            setData(res);
-        });
+        getPurchaseItems(10)
+            .then(res => {
+                const mappedData = mapPurchaseItemsToDataTable(res);
+                setData(mappedData);
+            })
+            .catch(err => console.log(err));
     }, []);
 
     return (
         <>
             <Table
                 columns={tableHeader}
-                dataSource={mapPurchaseItemsToDataTable(data)}
-                scroll={{ x: 240 }}
+                dataSource={data}
+                scroll={{ x: true }}
             />
         </>
     );
-};
+}
 
 const tableHeader = [
     {
@@ -54,11 +56,6 @@ const tableHeader = [
         title: "Payment Amount",
         dataIndex: "paymentAmount",
         key: "paymentAmount"
-    },
-    {
-        title: "Request Justification",
-        dataIndex: "requestJustification",
-        key: "requestJustification"
     },
     {
         title: "Request Justification",

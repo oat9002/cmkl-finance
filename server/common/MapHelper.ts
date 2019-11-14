@@ -4,25 +4,34 @@ import PurchaseItem from "../models/PurchanseItem";
 import IMapHelper from "./interfaces/MapHelper";
 import PurchaseRequisition from "../models/PurchaseRequisition";
 import InsertPurchaseItemsRequest from "../models/requests/InsertPurchaseItemsRequest";
+import { getOrElse } from "./Utils";
 
 class MapHelper implements IMapHelper {
     public mapAirtableRecToPurchaseItem(record: any): PurchaseItem {
         try {
             const toReturn = {
-                purchaseId: record.fields["Purchase ID"],
-                paymentDueDate: Moment(
-                    record.fields["Payment Due Date"],
-                    "D MMMM YYYY"
-                ).toDate(),
-                account: record.fields["Account"],
-                thbInvoiceAmount: record.fields["THB Invoice Amount"],
-                category: record.fields["Category"],
-                enteredBy: record.fields["Entered By"],
-                requestBy: record.fields["Request By"],
-                createdTime: Moment(
-                    record.fields["Created Time"],
-                    "D MMMM YYYY h:mma"
-                ).toDate()
+                purchaseId: getOrElse(record.fields["Purchase ID"]),
+                shortDescription: getOrElse(record.fields["Short Description"]),
+                paymentDueDate: getOrElse(
+                    Moment(
+                        record.fields["Payment Due Date"],
+                        "D MMMM YYYY"
+                    ).toDate()
+                ),
+                account: getOrElse(record.fields["Account"]),
+                usdInvoiceAmount: getOrElse(
+                    record.fields["USD Invoice Amount"]
+                ),
+                thbInvoiceAmount: getOrElse(
+                    record.fields["THB Invoice Amount"]
+                ),
+                paymentAmount: getOrElse(record.fields["Payment Amount"]),
+                requestJustification: getOrElse(
+                    record.fields["Request Justification"]
+                ),
+                enteredBy: getOrElse(record.fields["Entered By"]),
+                accountPayable: getOrElse(record.fields["Account Payable"]),
+                supplier: getOrElse(record.fields["Supplier"])
             };
 
             return toReturn as PurchaseItem;
@@ -38,6 +47,7 @@ class MapHelper implements IMapHelper {
             const pi = {};
             pi["Short Description"] = request.shortDescription;
             //toReturn["Purchase ID"] = request.purchaseId;
+            //missing
             pi["Payment Due Date"] = request.paymentDueDate;
             pi["USD Invoice Amount"] = request.usdInvoiceAmount;
             pi["THB Invoice Amount"] = request.thbInvoiceAmount;

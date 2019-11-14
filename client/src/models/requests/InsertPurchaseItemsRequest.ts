@@ -1,6 +1,6 @@
 import AirtableUser from "../AirtableUser";
 
-interface InsertPurchaseItemsRequest {
+export default interface InsertPurchaseItemsRequest {
     shortDescription: string;
     paymentDueDate: Date;
     usdInvoiceAmount: number;
@@ -12,5 +12,3 @@ interface InsertPurchaseItemsRequest {
     supplier: string;
     reviewedBy: AirtableUser;
 }
-
-export default InsertPurchaseItemsRequest;
