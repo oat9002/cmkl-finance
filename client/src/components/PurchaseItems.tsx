@@ -5,14 +5,24 @@ import { mapPurchaseItemsToDataTable } from "../commons/helpers/PurchaseItemsHel
 
 function PurchaseItems() {
     const [data, setData] = React.useState<any>([]);
+    const [isLoading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
-        getPurchaseItems(10)
+        getPurchaseItems({
+            option: {
+                maxRecords: 100,
+                sort: [{ field: "Purchase ID", direction: "asc" }]
+            }
+        })
             .then(res => {
                 const mappedData = mapPurchaseItemsToDataTable(res);
                 setData(mappedData);
+                setLoading(false);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                setLoading(false);
+                console.log(err);
+            });
     }, []);
 
     return (
@@ -21,6 +31,9 @@ function PurchaseItems() {
                 columns={tableHeader}
                 dataSource={data}
                 scroll={{ x: true }}
+                size="middle"
+                bordered={true}
+                loading={isLoading}
             />
         </>
     );
