@@ -1,11 +1,18 @@
 import * as React from "react";
-import { Tag, Table } from "antd";
+import { Tag, Table, Button } from "antd";
 import { getPurchaseItems } from "../services/PurchseItemsService";
 import { mapPurchaseItemsToDataTable } from "../commons/helpers/PurchaseItemsHelper";
+
+import style from "./PurchaseItems.module.css";
+import AddPurchaseItemModal from "./modal/AddPurchaseItem";
 
 function PurchaseItems() {
     const [data, setData] = React.useState<any>([]);
     const [isLoading, setLoading] = React.useState(true);
+    const [
+        isShowAddPurchaseItemModal,
+        setIsShowAddPurchaseItemModal
+    ] = React.useState(false);
 
     React.useEffect(() => {
         getPurchaseItems({
@@ -25,8 +32,25 @@ function PurchaseItems() {
             });
     }, []);
 
+    const onAddPurchaseItemClick = () => {
+        setIsShowAddPurchaseItemModal(true);
+    };
+
+    const addPurchaseItemModalVisileHandler = (isVisible: boolean) => {
+        setIsShowAddPurchaseItemModal(isVisible);
+    };
+
     return (
         <>
+            <div className={style.AddPurchaseItem}>
+                <Button type="primary" onClick={onAddPurchaseItemClick}>
+                    Add PurchaseItem
+                </Button>
+            </div>
+            <AddPurchaseItemModal
+                visible={isShowAddPurchaseItemModal}
+                setVisible={addPurchaseItemModalVisileHandler}
+            />
             <Table
                 columns={tableHeader}
                 dataSource={data}
