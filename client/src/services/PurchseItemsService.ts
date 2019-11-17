@@ -8,15 +8,9 @@ import GetPurchaseItemsRequest from "../models/requests/GetPurchaseItemsRequest"
 const piAxios = axios("purchaseItems");
 
 export async function getPurchaseItems(
-    recordCount: number
+    request: GetPurchaseItemsRequest
 ): Promise<PurchaseItem[]> {
     try {
-        const request: GetPurchaseItemsRequest = {
-            option: {
-                maxRecords: 10,
-                sort: [{ field: "Purchase ID", direction: "asc" }]
-            }
-        };
         const response: AxiosResponse<GetPurchaseItemsResponse> = await piAxios.post(
             "getPurchaseItems",
             request
@@ -28,6 +22,7 @@ export async function getPurchaseItems(
 
         return response.data.purchaseItems;
     } catch (err) {
+        console.log(err);
         return [];
     }
 }
