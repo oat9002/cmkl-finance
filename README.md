@@ -5,6 +5,10 @@
 1. Node.js
 2. Yarn
 
+ ```console
+    $ npm install -g yarn
+ ```
+
 ## **How to run this project**
 
 1.  Start server
