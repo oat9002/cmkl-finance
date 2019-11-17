@@ -4,6 +4,8 @@ import { AxiosResponse } from "axios";
 import GetPurchaseItemsResponse from "../models/responses/GetPurchaseItemsResponse";
 import { httpStatus } from "../commons/Constants";
 import GetPurchaseItemsRequest from "../models/requests/GetPurchaseItemsRequest";
+import InsertPurchaseItemsRequest from "../models/requests/InsertPurchaseItemsRequest";
+import InsertPurchaseItemResponse from "../models/responses/InsertPurchaseItemsResponse";
 
 const piAxios = axios("purchaseItems");
 
@@ -27,4 +29,20 @@ export async function getPurchaseItems(
     }
 }
 
-export async function insertPurchaseItems() {}
+export async function insertPurchaseItems(request: InsertPurchaseItemsRequest) {
+    try {
+        const response: AxiosResponse<InsertPurchaseItemResponse> = await piAxios.post(
+            "insertPurchaseItems",
+            request
+        );
+
+        if (response && response.status !== httpStatus.okay) {
+            return false;
+        }
+
+        return true;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+}

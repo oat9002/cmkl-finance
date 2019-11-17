@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Modal, Input } from "antd";
-import InputWithLabel from "../common/InputWithLabel";
+import InputWithLabel from "../common/InputWithLabel/InputWithLabel";
 
 export interface AddPurchaseItemProps {
     visible: boolean;
