@@ -126,11 +126,11 @@ const tableHeader = [
         key: "supplier"
     },
     {
-        title: "Action",
+        title: "",
         key: "action",
         render: () => (
             <span>
-                <a href="#">Go to Airtable</a>
+                <a href="#">Approve</a>
             </span>
         )
     }
