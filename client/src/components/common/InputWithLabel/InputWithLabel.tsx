@@ -8,19 +8,37 @@ export interface InputWithLabelProps {
     label: string;
     inputNumber?: boolean;
     datePicker?: boolean;
+    field: string;
+    onChangeWithUpdate: (field: string, value: any) => void;
 }
 
 const InputWithLabel: React.FC<InputWithLabelProps> = props => {
     const renderInput = () => {
         if (props.inputNumber) {
-            return <InputNumber placeholder={props.placeholder} />;
+            return (
+                <InputNumber
+                    id={props.field}
+                    placeholder={props.placeholder}
+                    onChange={inputOnChange}
+                />
+            );
         }
 
         if (props.datePicker) {
-            return <DatePicker />;
+            return <DatePicker id={props.field} onChange={inputOnChange} />;
         }
 
-        return <Input placeholder={props.placeholder} />;
+        return (
+            <Input
+                id={props.field}
+                placeholder={props.placeholder}
+                onChange={e => inputOnChange(e.target.value)}
+            />
+        );
+    };
+
+    const inputOnChange = (value: any) => {
+        props.onChangeWithUpdate(props.field, value);
     };
 
     return (

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Modal, Input } from "antd";
 import InputWithLabel from "../common/InputWithLabel/InputWithLabel";
+import InsertPurchaseItemsRequest from "../../models/requests/InsertPurchaseItemsRequest";
+import { insertPurchaseItems } from "../../services/PurchseItemsService";
 
 export interface AddPurchaseItemProps {
     visible: boolean;
@@ -9,18 +11,33 @@ export interface AddPurchaseItemProps {
 
 const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
     const [isConfirmLoading, setIsConfirmLoading] = React.useState(false);
+    const [request, setRequest] = React.useState({});
 
     const onCancel = () => {
         props.setVisible(false);
+        setRequest({});
     };
 
-    const onOk = () => {
+    const onOk = async () => {
         setIsConfirmLoading(true);
 
-        setTimeout(() => {
+        const isSuccess = await insertPurchaseItems(
+            request as InsertPurchaseItemsRequest
+        );
+
+        setIsConfirmLoading(false);
+
+        if (isSuccess) {
             props.setVisible(false);
-            setIsConfirmLoading(false);
-        });
+        } else {
+            alert("insert failed");
+        }
+    };
+
+    const onRequestChange = (field: string, value: any) => {
+        const toUpdate = { ...request };
+        (toUpdate as any)[field] = value;
+        setRequest(toUpdate);
     };
 
     return (
@@ -33,16 +50,60 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
             style={{ top: "5px" }}
             okText="Confirm"
         >
-            <InputWithLabel label="Short Description" />
-            <InputWithLabel label="Missing Receipt" />
-            <InputWithLabel label="Payment Due Date" datePicker />
-            <InputWithLabel label="USD Invoice Amount" inputNumber />
-            <InputWithLabel label="THB Invoice Amount" inputNumber />
-            <InputWithLabel label="Payment Amount" inputNumber />
-            <InputWithLabel label="Request Justification" />
-            <InputWithLabel label="Entered by" />
-            <InputWithLabel label="Account Payable" />
-            <InputWithLabel label="Supplier" />
+            <InputWithLabel
+                field="shortDescription"
+                label="Short Description"
+                onChangeWithUpdate={onRequestChange}
+            />
+            <InputWithLabel
+                field="missingReceipt"
+                label="Missing Receipt"
+                onChangeWithUpdate={onRequestChange}
+            />
+            <InputWithLabel
+                field="paymentDueDate"
+                label="Payment Due Date"
+                onChangeWithUpdate={onRequestChange}
+                datePicker
+            />
+            <InputWithLabel
+                field="usdInvoiceAmount"
+                label="USD Invoice Amount"
+                onChangeWithUpdate={onRequestChange}
+                inputNumber
+            />
+            <InputWithLabel
+                field="thbInvoiceAmount"
+                label="THB Invoice Amount"
+                onChangeWithUpdate={onRequestChange}
+                inputNumber
+            />
+            <InputWithLabel
+                field="paymentAmount"
+                label="Payment Amount"
+                onChangeWithUpdate={onRequestChange}
+                inputNumber
+            />
+            <InputWithLabel
+                field="requestJustification"
+                label="Request Justification"
+                onChangeWithUpdate={onRequestChange}
+            />
+            <InputWithLabel
+                field="enteredBy"
+                label="Entered by"
+                onChangeWithUpdate={onRequestChange}
+            />
+            <InputWithLabel
+                field="accountPayable"
+                label="Account Payable"
+                onChangeWithUpdate={onRequestChange}
+            />
+            <InputWithLabel
+                field="Suuplier"
+                label="Supplier"
+                onChangeWithUpdate={onRequestChange}
+            />
         </Modal>
     );
 };
