@@ -34,7 +34,7 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
             okText="Confirm"
         >
             <InputWithLabel label="Short Description" />
-            <InputWithLabel label="Missing Recript" />
+            <InputWithLabel label="Missing Receipt" />
             <InputWithLabel label="Payment Due Date" datePicker />
             <InputWithLabel label="USD Invoice Amount" inputNumber />
             <InputWithLabel label="THB Invoice Amount" inputNumber />
