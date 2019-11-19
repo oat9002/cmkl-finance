@@ -1,40 +1,47 @@
 import * as React from "react";
-import { Input, InputNumber, DatePicker } from "antd";
+import { Input, InputNumber, DatePicker, Checkbox } from "antd";
 
 import style from "./InputWithLabel.module.css";
 
 export interface InputWithLabelProps {
     placeholder?: string;
     label: string;
-    inputNumber?: boolean;
-    datePicker?: boolean;
+    inputType?: InputType;
     field: string;
     onChangeWithUpdate: (field: string, value: any) => void;
 }
 
+export type InputType = "default" | "datePicker" | "number" | "checkbox";
+
 const InputWithLabel: React.FC<InputWithLabelProps> = props => {
     const renderInput = () => {
-        if (props.inputNumber) {
-            return (
-                <InputNumber
-                    id={props.field}
-                    placeholder={props.placeholder}
-                    onChange={inputOnChange}
-                />
-            );
+        switch (props.inputType) {
+            case "number":
+                return (
+                    <InputNumber
+                        id={props.field}
+                        placeholder={props.placeholder}
+                        onChange={inputOnChange}
+                    />
+                );
+            case "datePicker":
+                return <DatePicker id={props.field} onChange={inputOnChange} />;
+            case "checkbox":
+                return (
+                    <Checkbox
+                        id={props.field}
+                        onChange={e => inputOnChange(e.target.checked)}
+                    />
+                );
+            default:
+                return (
+                    <Input
+                        id={props.field}
+                        placeholder={props.placeholder}
+                        onChange={e => inputOnChange(e.target.value)}
+                    />
+                );
         }
-
-        if (props.datePicker) {
-            return <DatePicker id={props.field} onChange={inputOnChange} />;
-        }
-
-        return (
-            <Input
-                id={props.field}
-                placeholder={props.placeholder}
-                onChange={e => inputOnChange(e.target.value)}
-            />
-        );
     };
 
     const inputOnChange = (value: any) => {

@@ -11,11 +11,11 @@ export interface AddPurchaseItemProps {
 
 const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
     const [isConfirmLoading, setIsConfirmLoading] = React.useState(false);
-    const [request, setRequest] = React.useState({});
+    let request = {};
 
     const onCancel = () => {
         props.setVisible(false);
-        setRequest({});
+        request = {};
     };
 
     const onOk = async () => {
@@ -35,9 +35,7 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
     };
 
     const onRequestChange = (field: string, value: any) => {
-        const toUpdate = { ...request };
-        (toUpdate as any)[field] = value;
-        setRequest(toUpdate);
+        (request as any)[field] = value;
     };
 
     return (
@@ -59,30 +57,31 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
                 field="missingReceipt"
                 label="Missing Receipt"
                 onChangeWithUpdate={onRequestChange}
+                inputType="checkbox"
             />
             <InputWithLabel
                 field="paymentDueDate"
                 label="Payment Due Date"
                 onChangeWithUpdate={onRequestChange}
-                datePicker
+                inputType="datePicker"
             />
             <InputWithLabel
                 field="usdInvoiceAmount"
                 label="USD Invoice Amount"
                 onChangeWithUpdate={onRequestChange}
-                inputNumber
+                inputType="number"
             />
             <InputWithLabel
                 field="thbInvoiceAmount"
                 label="THB Invoice Amount"
                 onChangeWithUpdate={onRequestChange}
-                inputNumber
+                inputType="number"
             />
             <InputWithLabel
                 field="paymentAmount"
                 label="Payment Amount"
                 onChangeWithUpdate={onRequestChange}
-                inputNumber
+                inputType="number"
             />
             <InputWithLabel
                 field="requestJustification"
