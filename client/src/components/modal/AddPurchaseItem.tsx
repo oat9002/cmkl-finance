@@ -12,11 +12,13 @@ export interface AddPurchaseItemProps {
 const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
     const [isConfirmLoading, setIsConfirmLoading] = React.useState(false);
     const [isAlert, setIsAlert] = React.useState(false);
-    let request = {};
+    const [request, setRequest] = React.useState(
+        createEmptyInsertPurchaseItemsRequest()
+    );
 
     const onCancel = () => {
         props.setVisible(false);
-        request = {};
+        setRequest(createEmptyInsertPurchaseItemsRequest());
     };
 
     const onOk = async () => {
@@ -29,15 +31,18 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
         setIsConfirmLoading(false);
 
         if (isSuccess) {
-            request = {};
+            setRequest(createEmptyInsertPurchaseItemsRequest());
             props.setVisible(false);
         } else {
             setIsAlert(true);
         }
     };
 
-    const onRequestChange = (field: string, value: any) => {
-        (request as any)[field] = value;
+    const onRequestChange = (field: string) => (value: any) => {
+        console.log(request);
+        const toUpdate = { ...request };
+        (toUpdate as any)[field] = value;
+        setRequest(toUpdate);
     };
 
     return (
@@ -60,62 +65,78 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
                 />
             ) : null}
             <InputWithLabel
-                field="shortDescription"
                 label="Short Description"
-                onChangeWithUpdate={onRequestChange}
+                onChangeWithUpdate={onRequestChange("shortDescription")}
+                value={request.shortDescription}
             />
             <InputWithLabel
-                field="missingReceipt"
                 label="Missing Receipt"
-                onChangeWithUpdate={onRequestChange}
+                onChangeWithUpdate={onRequestChange("missingReceipt")}
                 inputType="checkbox"
+                value={request.missingReceipt}
             />
             <InputWithLabel
-                field="paymentDueDate"
                 label="Payment Due Date"
-                onChangeWithUpdate={onRequestChange}
+                onChangeWithUpdate={onRequestChange("paymentDueDate")}
                 inputType="datePicker"
+                value={request.paymentDueDate}
             />
             <InputWithLabel
-                field="usdInvoiceAmount"
                 label="USD Invoice Amount"
-                onChangeWithUpdate={onRequestChange}
+                onChangeWithUpdate={onRequestChange("usdInvoiceAmount")}
                 inputType="number"
+                value={request.usdInvoiceAmount}
             />
             <InputWithLabel
-                field="thbInvoiceAmount"
                 label="THB Invoice Amount"
-                onChangeWithUpdate={onRequestChange}
+                onChangeWithUpdate={onRequestChange("thbInvoiceAmount")}
                 inputType="number"
+                value={request.thbInvoiceAmount}
             />
             <InputWithLabel
-                field="paymentAmount"
                 label="Payment Amount"
-                onChangeWithUpdate={onRequestChange}
+                onChangeWithUpdate={onRequestChange("paymentAmount")}
                 inputType="number"
+                value={request.paymentAmount}
             />
             <InputWithLabel
-                field="requestJustification"
                 label="Request Justification"
-                onChangeWithUpdate={onRequestChange}
+                onChangeWithUpdate={onRequestChange("requestJustification")}
+                value={request.requestJustification}
             />
-            <InputWithLabel
-                field="enteredBy"
+            {/* <InputWithLabel
                 label="Entered by"
-                onChangeWithUpdate={onRequestChange}
-            />
+                onChangeWithUpdate={onRequestChange("enteredBy")}
+                value={request.enteredBy}
+            /> */}
             <InputWithLabel
-                field="accountPayable"
                 label="Account Payable"
-                onChangeWithUpdate={onRequestChange}
+                onChangeWithUpdate={onRequestChange("accountPayable")}
+                value={request.accountPayable}
             />
             <InputWithLabel
-                field="supplier"
                 label="Suplier"
-                onChangeWithUpdate={onRequestChange}
+                onChangeWithUpdate={onRequestChange("supplier")}
+                value={request.supplier}
             />
         </Modal>
     );
 };
+
+function createEmptyInsertPurchaseItemsRequest(): InsertPurchaseItemsRequest {
+    return {
+        shortDescription: "",
+        missingReceipt: false,
+        paymentDueDate: new Date(),
+        usdInvoiceAmount: undefined,
+        thbInvoiceAmount: undefined,
+        paymentAmount: 0,
+        requestJustification: "",
+        enteredBy: undefined,
+        accountPayable: "",
+        supplier: "",
+        reviewedBy: undefined
+    };
+}
 
 export default AddPurchaseItem;

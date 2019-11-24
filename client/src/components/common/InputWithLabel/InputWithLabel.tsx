@@ -2,13 +2,14 @@ import * as React from "react";
 import { Input, InputNumber, DatePicker, Checkbox } from "antd";
 
 import style from "./InputWithLabel.module.css";
+import moment from "moment";
 
 export interface InputWithLabelProps {
     placeholder?: string;
     label: string;
     inputType?: InputType;
-    field: string;
-    onChangeWithUpdate: (field: string, value: any) => void;
+    value: any;
+    onChangeWithUpdate: (value: any) => void;
 }
 
 export type InputType = "default" | "datePicker" | "number" | "checkbox";
@@ -19,33 +20,40 @@ const InputWithLabel: React.FC<InputWithLabelProps> = props => {
             case "number":
                 return (
                     <InputNumber
-                        id={props.field}
                         placeholder={props.placeholder}
-                        onChange={inputOnChange}
+                        onChange={props.onChangeWithUpdate}
+                        value={props.value}
                     />
                 );
             case "datePicker":
-                return <DatePicker id={props.field} onChange={inputOnChange} />;
+                return (
+                    <DatePicker
+                        onChange={m =>
+                            m
+                                ? props.onChangeWithUpdate(m.toDate())
+                                : props.onChangeWithUpdate(new Date())
+                        }
+                        value={moment(props.value)}
+                    />
+                );
             case "checkbox":
                 return (
                     <Checkbox
-                        id={props.field}
-                        onChange={e => inputOnChange(e.target.checked)}
+                        onChange={e =>
+                            props.onChangeWithUpdate(e.target.checked)
+                        }
+                        checked={props.value}
                     />
                 );
             default:
                 return (
                     <Input
-                        id={props.field}
                         placeholder={props.placeholder}
-                        onChange={e => inputOnChange(e.target.value)}
+                        onChange={e => props.onChangeWithUpdate(e.target.value)}
+                        value={props.value}
                     />
                 );
         }
-    };
-
-    const inputOnChange = (value: any) => {
-        props.onChangeWithUpdate(props.field, value);
     };
 
     return (

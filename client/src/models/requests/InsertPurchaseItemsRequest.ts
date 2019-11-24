@@ -8,8 +8,8 @@ export default interface InsertPurchaseItemsRequest {
     thbInvoiceAmount?: number;
     paymentAmount: number;
     requestJustification: string;
-    enteredBy: AirtableUser;
+    enteredBy?: AirtableUser;
     accountPayable: string;
     supplier?: string;
-    reviewedBy: AirtableUser;
+    reviewedBy?: AirtableUser;
 }
