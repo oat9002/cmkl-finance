@@ -117,8 +117,8 @@ const tableHeader = [
     },
     {
         title: "Account Payable",
-        dataIndex: "accountPayble",
-        key: "accountPayble"
+        dataIndex: "accountPayable",
+        key: "accountPayable"
     },
     {
         title: "Supplier",

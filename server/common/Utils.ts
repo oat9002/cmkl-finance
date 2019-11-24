@@ -8,8 +8,12 @@ export function getOrElse<T>(data: T, defaultVal: T | null = null): T | null {
     }
 }
 
-export function formatAmount(input: number, c: currency): string {
+export function formatAmount(c: currency, input?: number): string {
     try {
+        if (!input) {
+            return "";
+        }
+
         switch (c) {
             case currency.THB: {
                 const amount = new Intl.NumberFormat("th-TH").format(input);

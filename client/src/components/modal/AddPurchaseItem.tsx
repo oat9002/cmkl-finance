@@ -99,8 +99,8 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
                 onChangeWithUpdate={onRequestChange}
             />
             <InputWithLabel
-                field="Suuplier"
-                label="Supplier"
+                field="supplier"
+                label="Suplier"
                 onChangeWithUpdate={onRequestChange}
             />
         </Modal>

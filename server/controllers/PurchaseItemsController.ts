@@ -1,14 +1,14 @@
 import * as express from "express";
 import { httpStatus } from "../common/Constants";
-import IPurchaseItemsService from "../services/interfaces/PurchaseItemsService";
-import PurchaseItemsService from "../services/PurchaseItemsService";
+import PurchaseItemsService from "../services/interfaces/PurchaseItemsService";
+import PurchaseItemsServiceImpl from "../services/PurchaseItemsService";
 import InsertPurchaseItemResponse from "../models/responses/InsertPurchaseItemsResponse";
 import GetPurchaseItemsResponse from "../models/responses/GetPurchaseItemsResponse";
 import MapHelper from "../common/MapHelper";
 import AirtableService from "../services/AirtableService";
 
 const purhaseItemsController = express.Router();
-const purchaseItemsService: IPurchaseItemsService = new PurchaseItemsService(
+const purchaseItemsService: PurchaseItemsService = new PurchaseItemsServiceImpl(
     new AirtableService(),
     new MapHelper()
 );

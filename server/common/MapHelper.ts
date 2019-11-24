@@ -54,31 +54,29 @@ class MapHelperImpl implements MapHelper {
             //toReturn["Purchase ID"] = request.purchaseId;
             //missing
             pi["Missing Receipt"] = request.missingReceipt;
-            pi["Payment Due Date"] = Moment(
-                request.paymentDueDate,
+            pi["Payment Due Date"] = Moment(request.paymentDueDate).format(
                 "D MMMM YYYY"
             );
             pi["USD Invoice Amount"] = formatAmount(
-                request.usdInvoiceAmount,
-                currency.THB
+                currency.THB,
+                request.usdInvoiceAmount
             );
             pi["THB Invoice Amount"] = formatAmount(
-                request.thbInvoiceAmount,
-                currency.USD
+                currency.USD,
+                request.thbInvoiceAmount
             );
             pi["Payment Amount"] = formatAmount(
-                request.paymentAmount,
-                currency.THB
+                currency.THB,
+                request.paymentAmount
             );
             pi["Request Justification"] = request.requestJustification;
-            pi["Entered By"] = request.enteredBy;
+            //pi["Entered By"] = request.enteredBy;
             pi["Account Payable"] = request.accountPayable;
             pi["Supplier"] = request.supplier;
-            pi["Reviewed By"] = request.reviewedBy;
-            pi["Created Time"] = Moment(
-                Moment.now(),
+            //pi["Reviewed By"] = request.reviewedBy;
+            pi["Created Time"] = Moment(Moment.now()).format(
                 "D MMMM YYYY h:mma"
-            ).toString();
+            );
 
             const toReturn = {
                 fields: pi

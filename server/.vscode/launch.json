@@ -7,8 +7,8 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Attach",
+            "name": "Server debug",
             "port": 9229
-        },
+        }
     ]
 }
