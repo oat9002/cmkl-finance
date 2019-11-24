@@ -36,7 +36,11 @@ class MapHelperImpl implements MapHelper {
                 ),
                 enteredBy: getOrElse(record.fields["Entered By"]),
                 accountPayable: getOrElse(record.fields["Account Payable"]),
-                supplier: getOrElse(record.fields["Supplier"])
+                supplier: getOrElse(record.fields["Supplier"]),
+                missingReceipt: getOrElse(
+                    record.fields["Missing Receipt"],
+                    false
+                )
             };
 
             return toReturn as PurchaseItem;

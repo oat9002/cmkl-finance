@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Tag, Table, Button } from "antd";
+import { Tag, Table, Button, Icon } from "antd";
 import { getPurchaseItems } from "../services/PurchseItemsService";
 import { mapPurchaseItemsToDataTable } from "../commons/helpers/PurchaseItemsHelper";
 
@@ -40,9 +40,98 @@ function PurchaseItems() {
         setIsShowAddPurchaseItemModal(isVisible);
     };
 
+    const tableHeader = [
+        {
+            title: "Purchase Id",
+            dataIndex: "purchaseItemsId",
+            key: "purchaseItemsId"
+        },
+        {
+            title: "Description",
+            dataIndex: "shortDescription",
+            key: "shortDescription"
+        },
+        {
+            title: "Missing Receipt",
+            dataIndex: "missingReceipt",
+            key: "missingReceipt",
+            render: (value: boolean) => {
+                if (!value) {
+                    return null;
+                }
+
+                return (
+                    <span className={style.missingReceiptIcon}>
+                        <Icon type="exclamation-circle" />
+                    </span>
+                );
+            }
+        },
+        {
+            title: "Payment Due Date",
+            dataIndex: "paymentDueDate",
+            key: "paymentDueDate"
+        },
+        {
+            title: "USD Invoice Amount",
+            dataIndex: "usdInvoiceAmount",
+            key: "usdInvoiceAmount"
+        },
+        {
+            title: "THB Invoice Amount",
+            dataIndex: "thbInvoiceAmount",
+            key: "thbInvoiceAmount"
+        },
+        {
+            title: "Payment Amount",
+            dataIndex: "paymentAmount",
+            key: "paymentAmount"
+        },
+        {
+            title: "Request Justification",
+            dataIndex: "requestJustification",
+            key: "requestJustification"
+        },
+        {
+            title: "Entered By",
+            dataIndex: "enteredBy",
+            key: "enteredBy",
+            render: (name?: string) => {
+                if (!name) {
+                    return null;
+                }
+
+                return (
+                    <span>
+                        <Tag color="blue">{name}</Tag>
+                    </span>
+                );
+            }
+        },
+        {
+            title: "Account Payable",
+            dataIndex: "accountPayable",
+            key: "accountPayable"
+        },
+        {
+            title: "Supplier",
+            dataIndex: "supplier",
+            key: "supplier"
+        },
+        {
+            title: "",
+            key: "action",
+            render: () => (
+                <span>
+                    <a href="#">Approve</a>
+                </span>
+            )
+        }
+    ];
+
     return (
         <>
-            <div className={style.AddPurchaseItem}>
+            <div className={style.addPurchaseItem}>
                 <Button type="primary" onClick={onAddPurchaseItemClick}>
                     Add PurchaseItem
                 </Button>
@@ -62,78 +151,5 @@ function PurchaseItems() {
         </>
     );
 }
-
-const tableHeader = [
-    {
-        title: "Purchase Id",
-        dataIndex: "purchaseItemsId",
-        key: "purchaseItemsId"
-    },
-    {
-        title: "Description",
-        dataIndex: "shortDescription",
-        key: "age"
-    },
-    {
-        title: "Payment Due Date",
-        dataIndex: "paymentDueDate",
-        key: "paymentDueDate"
-    },
-    {
-        title: "USD Invoice Amount",
-        dataIndex: "usdInvoiceAmount",
-        key: "usdInvoiceAmount"
-    },
-    {
-        title: "THB Invoice Amount",
-        dataIndex: "thbInvoiceAmount",
-        key: "thbInvoiceAmount"
-    },
-    {
-        title: "Payment Amount",
-        dataIndex: "paymentAmount",
-        key: "paymentAmount"
-    },
-    {
-        title: "Request Justification",
-        dataIndex: "requestJustification",
-        key: "requestJustification"
-    },
-    {
-        title: "Entered By",
-        dataIndex: "enteredBy",
-        key: "enteredBy",
-        render: (name?: string) => {
-            if (!name) {
-                return null;
-            }
-
-            return (
-                <span>
-                    <Tag color="blue">{name}</Tag>
-                </span>
-            );
-        }
-    },
-    {
-        title: "Account Payable",
-        dataIndex: "accountPayable",
-        key: "accountPayable"
-    },
-    {
-        title: "Supplier",
-        dataIndex: "supplier",
-        key: "supplier"
-    },
-    {
-        title: "",
-        key: "action",
-        render: () => (
-            <span>
-                <a href="#">Approve</a>
-            </span>
-        )
-    }
-];
 
 export default PurchaseItems;

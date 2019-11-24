@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Modal, Input } from "antd";
+import { Modal, Alert } from "antd";
 import InputWithLabel from "../common/InputWithLabel/InputWithLabel";
 import InsertPurchaseItemsRequest from "../../models/requests/InsertPurchaseItemsRequest";
 import { insertPurchaseItems } from "../../services/PurchseItemsService";
@@ -11,6 +11,7 @@ export interface AddPurchaseItemProps {
 
 const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
     const [isConfirmLoading, setIsConfirmLoading] = React.useState(false);
+    const [isAlert, setIsAlert] = React.useState(false);
     let request = {};
 
     const onCancel = () => {
@@ -28,9 +29,10 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
         setIsConfirmLoading(false);
 
         if (isSuccess) {
+            request = {};
             props.setVisible(false);
         } else {
-            alert("insert failed");
+            setIsAlert(true);
         }
     };
 
@@ -48,6 +50,15 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
             style={{ top: "5px" }}
             okText="Confirm"
         >
+            {isAlert ? (
+                <Alert
+                    type="error"
+                    message="Insert failed"
+                    banner
+                    closable
+                    onClose={() => setIsAlert(false)}
+                />
+            ) : null}
             <InputWithLabel
                 field="shortDescription"
                 label="Short Description"
