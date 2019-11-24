@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Modal, Alert } from "antd";
-import InputWithLabel from "../common/InputWithLabel/InputWithLabel";
+import * as Yup from "yup";
+import { Modal, Alert, Form, Input } from "antd";
 import InsertPurchaseItemsRequest from "../../models/requests/InsertPurchaseItemsRequest";
 import { insertPurchaseItems } from "../../services/PurchseItemsService";
 
@@ -12,17 +12,19 @@ export interface AddPurchaseItemProps {
 const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
     const [isConfirmLoading, setIsConfirmLoading] = React.useState(false);
     const [isAlert, setIsAlert] = React.useState(false);
-    const [request, setRequest] = React.useState(
-        createEmptyInsertPurchaseItemsRequest()
-    );
+    let request = createEmptyRequest();
 
     const onCancel = () => {
         props.setVisible(false);
-        setRequest(createEmptyInsertPurchaseItemsRequest());
     };
 
     const onOk = async () => {
         setIsConfirmLoading(true);
+
+        if (!schema.isValid(request)) {
+            setIsConfirmLoading(false);
+            setIsAlert(true);
+        }
 
         const isSuccess = await insertPurchaseItems(
             request as InsertPurchaseItemsRequest
@@ -31,7 +33,6 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
         setIsConfirmLoading(false);
 
         if (isSuccess) {
-            setRequest(createEmptyInsertPurchaseItemsRequest());
             props.setVisible(false);
         } else {
             setIsAlert(true);
@@ -39,11 +40,104 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
     };
 
     const onRequestChange = (field: string) => (value: any) => {
-        console.log(request);
         const toUpdate = { ...request };
         (toUpdate as any)[field] = value;
-        setRequest(toUpdate);
+        request = toUpdate;
     };
+
+    const ExtendedForm = Form.create({
+        name: "insert_pp",
+        onFieldsChange(_, changedField) {
+            const key = Object.keys(changedField)[0];
+            onRequestChange(changedField[key].name)(changedField[key].value);
+        }
+    })((props: any) => {
+        const { getFieldDecorator, getFieldError, isFieldTouched } = props.form;
+        const shortDescriptionError =
+            isFieldTouched("shortDescription") &&
+            getFieldError("shortDescription");
+
+        return (
+            <Form layout="horizontal">
+                <Form.Item
+                    label="Short Description"
+                    validateStatus={shortDescriptionError ? "error" : "success"}
+                    hasFeedback={shortDescriptionError}
+                    required
+                >
+                    {getFieldDecorator("shortDescription", {
+                        rules: [
+                            {
+                                required: true,
+                                message: "Please input your shortDescription!"
+                            }
+                        ]
+                    })(<Input />)}
+                </Form.Item>
+                {/* <Form.Item label="Missing Receipt">
+                    <InputWithHandleChange
+                        onChangeWithUpdate={onRequestChange("missingReceipt")}
+                        inputType="checkbox"
+                        value={request.missingReceipt}
+                    />
+                </Form.Item>
+                <Form.Item label="Payment Due Date" required>
+                    <InputWithHandleChange
+                        onChangeWithUpdate={onRequestChange("paymentDueDate")}
+                        inputType="datePicker"
+                        value={request.paymentDueDate}
+                    />
+                </Form.Item>
+                <Form.Item label="USD Invoice Amount">
+                    <InputWithHandleChange
+                        onChangeWithUpdate={onRequestChange("usdInvoiceAmount")}
+                        inputType="number"
+                        value={request.usdInvoiceAmount}
+                    />
+                </Form.Item>
+                <Form.Item label="THB Invoice Amount">
+                    <InputWithHandleChange
+                        onChangeWithUpdate={onRequestChange("thbInvoiceAmount")}
+                        inputType="number"
+                        value={request.thbInvoiceAmount}
+                    />
+                </Form.Item>
+                <Form.Item label="Payment Amount" required>
+                    <InputWithHandleChange
+                        onChangeWithUpdate={onRequestChange("paymentAmount")}
+                        inputType="number"
+                        value={request.paymentAmount}
+                    />
+                </Form.Item>
+                <Form.Item label="Request Justification" required>
+                    <InputWithHandleChange
+                        onChangeWithUpdate={onRequestChange(
+                            "requestJustification"
+                        )}
+                        value={request.requestJustification}
+                    />
+                </Form.Item> */}
+                {/* <Form.Item label="Entered by">
+                            <InputWithLabel
+                                onChangeWithUpdate={onRequestChange("enteredBy")}
+                                value={request.enteredBy}
+                            />
+                        </Form.Item> */}
+                {/* <Form.Item label="Account Payable" required>
+                    <InputWithHandleChange
+                        onChangeWithUpdate={onRequestChange("accountPayable")}
+                        value={request.accountPayable}
+                    />
+                </Form.Item>
+                <Form.Item label="Suplier">
+                    <InputWithHandleChange
+                        onChangeWithUpdate={onRequestChange("supplier")}
+                        value={request.supplier}
+                    />
+                </Form.Item> */}
+            </Form>
+        );
+    });
 
     return (
         <Modal
@@ -64,66 +158,12 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
                     onClose={() => setIsAlert(false)}
                 />
             ) : null}
-            <InputWithLabel
-                label="Short Description"
-                onChangeWithUpdate={onRequestChange("shortDescription")}
-                value={request.shortDescription}
-            />
-            <InputWithLabel
-                label="Missing Receipt"
-                onChangeWithUpdate={onRequestChange("missingReceipt")}
-                inputType="checkbox"
-                value={request.missingReceipt}
-            />
-            <InputWithLabel
-                label="Payment Due Date"
-                onChangeWithUpdate={onRequestChange("paymentDueDate")}
-                inputType="datePicker"
-                value={request.paymentDueDate}
-            />
-            <InputWithLabel
-                label="USD Invoice Amount"
-                onChangeWithUpdate={onRequestChange("usdInvoiceAmount")}
-                inputType="number"
-                value={request.usdInvoiceAmount}
-            />
-            <InputWithLabel
-                label="THB Invoice Amount"
-                onChangeWithUpdate={onRequestChange("thbInvoiceAmount")}
-                inputType="number"
-                value={request.thbInvoiceAmount}
-            />
-            <InputWithLabel
-                label="Payment Amount"
-                onChangeWithUpdate={onRequestChange("paymentAmount")}
-                inputType="number"
-                value={request.paymentAmount}
-            />
-            <InputWithLabel
-                label="Request Justification"
-                onChangeWithUpdate={onRequestChange("requestJustification")}
-                value={request.requestJustification}
-            />
-            {/* <InputWithLabel
-                label="Entered by"
-                onChangeWithUpdate={onRequestChange("enteredBy")}
-                value={request.enteredBy}
-            /> */}
-            <InputWithLabel
-                label="Account Payable"
-                onChangeWithUpdate={onRequestChange("accountPayable")}
-                value={request.accountPayable}
-            />
-            <InputWithLabel
-                label="Suplier"
-                onChangeWithUpdate={onRequestChange("supplier")}
-                value={request.supplier}
-            />
+            <ExtendedForm />
         </Modal>
     );
 };
 
-function createEmptyInsertPurchaseItemsRequest(): InsertPurchaseItemsRequest {
+function createEmptyRequest(): InsertPurchaseItemsRequest {
     return {
         shortDescription: "",
         missingReceipt: false,
@@ -138,5 +178,25 @@ function createEmptyInsertPurchaseItemsRequest(): InsertPurchaseItemsRequest {
         reviewedBy: undefined
     };
 }
+
+const schema = Yup.object().shape({
+    shortDescription: Yup.string()
+        .trim()
+        .required(),
+    missingReceipt: Yup.boolean(),
+    paymentDueDate: Yup.date().required(),
+    usdInvoiceAmount: Yup.number(),
+    thbInvoiceAmount: Yup.number(),
+    paymentAmount: Yup.number().required(),
+    requestJustification: Yup.string()
+        .trim()
+        .required(),
+    enteredBy: Yup.object(),
+    accountPayable: Yup.string()
+        .trim()
+        .required(),
+    supplier: Yup.string(),
+    reviewedBy: Yup.object()
+});
 
 export default AddPurchaseItem;
