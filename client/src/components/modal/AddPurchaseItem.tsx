@@ -1,8 +1,17 @@
 import * as React from "react";
 import * as Yup from "yup";
-import { Modal, Alert, Form, Input } from "antd";
+import {
+    Modal,
+    Alert,
+    Form,
+    Input,
+    Checkbox,
+    DatePicker,
+    InputNumber
+} from "antd";
 import InsertPurchaseItemsRequest from "../../models/requests/InsertPurchaseItemsRequest";
 import { insertPurchaseItems } from "../../services/PurchseItemsService";
+import { getToday, removeTimeFromDate } from "../../services/Utils";
 
 export interface AddPurchaseItemProps {
     visible: boolean;
@@ -20,10 +29,12 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
 
     const onOk = async () => {
         setIsConfirmLoading(true);
+        console.log(request);
 
-        if (!schema.isValid(request)) {
+        if (!schema.isValidSync(request)) {
             setIsConfirmLoading(false);
             setIsAlert(true);
+            return;
         }
 
         const isSuccess = await insertPurchaseItems(
@@ -41,7 +52,10 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
 
     const onRequestChange = (field: string) => (value: any) => {
         const toUpdate = { ...request };
-        (toUpdate as any)[field] = value;
+        (toUpdate as any)[field] =
+            field === "paymentDueDate"
+                ? removeTimeFromDate(value.toDate())
+                : value;
         request = toUpdate;
     };
 
@@ -53,88 +67,131 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
         }
     })((props: any) => {
         const { getFieldDecorator, getFieldError, isFieldTouched } = props.form;
-        const shortDescriptionError =
-            isFieldTouched("shortDescription") &&
-            getFieldError("shortDescription");
+        const formItemLayout = {
+            labelCol: { span: 8 },
+            wrapperCol: { span: 16 }
+        };
+        const formatNumber = (value: string | number | undefined) =>
+            value ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "";
+        const checkError = (field: string) =>
+            isFieldTouched(field) && getFieldError(field);
 
         return (
             <Form layout="horizontal">
                 <Form.Item
                     label="Short Description"
-                    validateStatus={shortDescriptionError ? "error" : "success"}
-                    hasFeedback={shortDescriptionError}
+                    validateStatus={
+                        checkError("shortDescription") ? "error" : "success"
+                    }
+                    hasFeedback={checkError("shortDescription")}
                     required
+                    {...formItemLayout}
                 >
                     {getFieldDecorator("shortDescription", {
                         rules: [
                             {
                                 required: true,
-                                message: "Please input your shortDescription!"
+                                message:
+                                    "Please fill in your short description!"
                             }
                         ]
                     })(<Input />)}
                 </Form.Item>
-                {/* <Form.Item label="Missing Receipt">
-                    <InputWithHandleChange
-                        onChangeWithUpdate={onRequestChange("missingReceipt")}
-                        inputType="checkbox"
-                        value={request.missingReceipt}
-                    />
+                <Form.Item label="Missing Receipt" {...formItemLayout}>
+                    {getFieldDecorator("missingReceipt")(<Checkbox />)}
                 </Form.Item>
-                <Form.Item label="Payment Due Date" required>
-                    <InputWithHandleChange
-                        onChangeWithUpdate={onRequestChange("paymentDueDate")}
-                        inputType="datePicker"
-                        value={request.paymentDueDate}
-                    />
+                <Form.Item
+                    label="Payment Due Date"
+                    validateStatus={
+                        checkError("paymentDueDate") ? "error" : "success"
+                    }
+                    hasFeedback={checkError("paymentDueDate")}
+                    required
+                    {...formItemLayout}
+                >
+                    {getFieldDecorator("paymentDueDate", {
+                        rules: [
+                            {
+                                required: true,
+                                message: "Please fill in your payment due date!"
+                            }
+                        ]
+                    })(<DatePicker />)}
                 </Form.Item>
-                <Form.Item label="USD Invoice Amount">
-                    <InputWithHandleChange
-                        onChangeWithUpdate={onRequestChange("usdInvoiceAmount")}
-                        inputType="number"
-                        value={request.usdInvoiceAmount}
-                    />
+                <Form.Item label="USD Invoice Amount" {...formItemLayout}>
+                    {getFieldDecorator("usdInvoiceAmount")(
+                        <InputNumber min={0} formatter={formatNumber} />
+                    )}
                 </Form.Item>
-                <Form.Item label="THB Invoice Amount">
-                    <InputWithHandleChange
-                        onChangeWithUpdate={onRequestChange("thbInvoiceAmount")}
-                        inputType="number"
-                        value={request.thbInvoiceAmount}
-                    />
+                <Form.Item label="THB Invoice Amount" {...formItemLayout}>
+                    {getFieldDecorator("thbInvoiceAmount")(
+                        <InputNumber min={0} formatter={formatNumber} />
+                    )}
                 </Form.Item>
-                <Form.Item label="Payment Amount" required>
-                    <InputWithHandleChange
-                        onChangeWithUpdate={onRequestChange("paymentAmount")}
-                        inputType="number"
-                        value={request.paymentAmount}
-                    />
+                <Form.Item
+                    label="Payment Amount"
+                    validateStatus={
+                        checkError("paymentAmount") ? "error" : "success"
+                    }
+                    hasFeedback={checkError("paymentAmount")}
+                    required
+                    {...formItemLayout}
+                >
+                    {getFieldDecorator("paymentAmount", {
+                        rules: [
+                            {
+                                required: true,
+                                message: "Please fill in your payment amount!"
+                            }
+                        ]
+                    })(<InputNumber min={0} formatter={formatNumber} />)}
                 </Form.Item>
-                <Form.Item label="Request Justification" required>
-                    <InputWithHandleChange
-                        onChangeWithUpdate={onRequestChange(
-                            "requestJustification"
-                        )}
-                        value={request.requestJustification}
-                    />
-                </Form.Item> */}
+                <Form.Item
+                    label="Request Justification"
+                    validateStatus={
+                        checkError("requestJustification") ? "error" : "success"
+                    }
+                    hasFeedback={checkError("requestJustification")}
+                    required
+                    {...formItemLayout}
+                >
+                    {getFieldDecorator("requestJustification", {
+                        rules: [
+                            {
+                                required: true,
+                                message:
+                                    "Please fill in your requested justification!"
+                            }
+                        ]
+                    })(<Input />)}
+                </Form.Item>
                 {/* <Form.Item label="Entered by">
                             <InputWithLabel
                                 onChangeWithUpdate={onRequestChange("enteredBy")}
                                 value={request.enteredBy}
                             />
                         </Form.Item> */}
-                {/* <Form.Item label="Account Payable" required>
-                    <InputWithHandleChange
-                        onChangeWithUpdate={onRequestChange("accountPayable")}
-                        value={request.accountPayable}
-                    />
+                <Form.Item
+                    label="Account Payable"
+                    validateStatus={
+                        checkError("accountPayable") ? "error" : "success"
+                    }
+                    hasFeedback={checkError("accountPayable")}
+                    required
+                    {...formItemLayout}
+                >
+                    {getFieldDecorator("accountPayable", {
+                        rules: [
+                            {
+                                required: true,
+                                message: "Please fill in your account payable!"
+                            }
+                        ]
+                    })(<Input />)}
                 </Form.Item>
-                <Form.Item label="Suplier">
-                    <InputWithHandleChange
-                        onChangeWithUpdate={onRequestChange("supplier")}
-                        value={request.supplier}
-                    />
-                </Form.Item> */}
+                <Form.Item label="Suplier" {...formItemLayout}>
+                    {getFieldDecorator("supplier")(<Input />)}
+                </Form.Item>
             </Form>
         );
     });
@@ -165,16 +222,16 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
 
 function createEmptyRequest(): InsertPurchaseItemsRequest {
     return {
-        shortDescription: "",
+        shortDescription: "undefined",
         missingReceipt: false,
-        paymentDueDate: new Date(),
+        paymentDueDate: getToday(),
         usdInvoiceAmount: undefined,
         thbInvoiceAmount: undefined,
         paymentAmount: 0,
         requestJustification: "",
         enteredBy: undefined,
         accountPayable: "",
-        supplier: "",
+        supplier: undefined,
         reviewedBy: undefined
     };
 }
@@ -182,18 +239,23 @@ function createEmptyRequest(): InsertPurchaseItemsRequest {
 const schema = Yup.object().shape({
     shortDescription: Yup.string()
         .trim()
+        .min(1)
         .required(),
     missingReceipt: Yup.boolean(),
     paymentDueDate: Yup.date().required(),
     usdInvoiceAmount: Yup.number(),
     thbInvoiceAmount: Yup.number(),
-    paymentAmount: Yup.number().required(),
+    paymentAmount: Yup.number()
+        .min(0)
+        .required(),
     requestJustification: Yup.string()
         .trim()
+        .min(1)
         .required(),
     enteredBy: Yup.object(),
     accountPayable: Yup.string()
         .trim()
+        .min(1)
         .required(),
     supplier: Yup.string(),
     reviewedBy: Yup.object()
