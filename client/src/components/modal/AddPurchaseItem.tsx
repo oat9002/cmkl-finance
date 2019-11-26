@@ -29,7 +29,6 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
 
     const onOk = async () => {
         setIsConfirmLoading(true);
-        console.log(request);
 
         if (!schema.isValidSync(request)) {
             setIsConfirmLoading(false);
@@ -74,7 +73,9 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
         const formatNumber = (value: string | number | undefined) =>
             value ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "";
         const checkError = (field: string) =>
-            isFieldTouched(field) && getFieldError(field);
+            isFieldTouched(field) &&
+            getFieldError(field) &&
+            schema.validateSyncAt(field, { ...request });
 
         return (
             <Form layout="horizontal">
@@ -215,7 +216,7 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
                     onClose={() => setIsAlert(false)}
                 />
             ) : null}
-            <ExtendedForm />
+            <ExtendedForm wrappedComponentRef />
         </Modal>
     );
 };
@@ -223,7 +224,7 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
 function createEmptyRequest(): InsertPurchaseItemsRequest {
     return {
         shortDescription: "undefined",
-        missingReceipt: false,
+        missingReceipt: undefined,
         paymentDueDate: getToday(),
         usdInvoiceAmount: undefined,
         thbInvoiceAmount: undefined,
@@ -236,15 +237,15 @@ function createEmptyRequest(): InsertPurchaseItemsRequest {
     };
 }
 
-const schema = Yup.object().shape({
+const schema = Yup.object({
     shortDescription: Yup.string()
         .trim()
         .min(1)
         .required(),
-    missingReceipt: Yup.boolean(),
+    missingReceipt: Yup.boolean().notRequired(),
     paymentDueDate: Yup.date().required(),
-    usdInvoiceAmount: Yup.number(),
-    thbInvoiceAmount: Yup.number(),
+    usdInvoiceAmount: Yup.number().notRequired(),
+    thbInvoiceAmount: Yup.number().notRequired(),
     paymentAmount: Yup.number()
         .min(0)
         .required(),
@@ -257,7 +258,7 @@ const schema = Yup.object().shape({
         .trim()
         .min(1)
         .required(),
-    supplier: Yup.string(),
+    supplier: Yup.string().notRequired(),
     reviewedBy: Yup.object()
 });
 
