@@ -73,9 +73,7 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
         const formatNumber = (value: string | number | undefined) =>
             value ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "";
         const checkError = (field: string) =>
-            isFieldTouched(field) &&
-            getFieldError(field) &&
-            schema.validateSyncAt(field, { ...request });
+            isFieldTouched(field) && getFieldError(field);
 
         return (
             <Form layout="horizontal">
