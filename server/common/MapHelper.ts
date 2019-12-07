@@ -4,9 +4,14 @@ import PurchaseItem from "../models/PurchanseItem";
 import MapHelper from "./interfaces/MapHelper";
 import PurchaseRequisition from "../models/PurchaseRequisition";
 import InsertPurchaseItemsRequest from "../models/requests/InsertPurchaseItemsRequest";
-import { getOrElse } from "./Utils";
+import { getOrElse, formatAmount } from "./Utils";
+import { currency } from "./Constants";
 
 class MapHelperImpl implements MapHelper {
+    public constructor() {
+        Moment.locale("TH");
+    }
+
     public mapAirtableRecToPurchaseItem(record: any): PurchaseItem {
         try {
             const toReturn = {
@@ -31,7 +36,11 @@ class MapHelperImpl implements MapHelper {
                 ),
                 enteredBy: getOrElse(record.fields["Entered By"]),
                 accountPayable: getOrElse(record.fields["Account Payable"]),
-                supplier: getOrElse(record.fields["Supplier"])
+                supplier: getOrElse(record.fields["Supplier"]),
+                missingReceipt: getOrElse(
+                    record.fields["Missing Receipt"],
+                    false
+                )
             };
 
             return toReturn as PurchaseItem;
@@ -48,19 +57,30 @@ class MapHelperImpl implements MapHelper {
             pi["Short Description"] = request.shortDescription;
             //toReturn["Purchase ID"] = request.purchaseId;
             //missing
-            pi["Payment Due Date"] = request.paymentDueDate;
-            pi["USD Invoice Amount"] = request.usdInvoiceAmount;
-            pi["THB Invoice Amount"] = request.thbInvoiceAmount;
-            pi["Payment Amount"] = request.paymentAmount;
+            pi["Missing Receipt"] = request.missingReceipt;
+            pi["Payment Due Date"] = Moment(request.paymentDueDate).format(
+                "D MMMM YYYY"
+            );
+            pi["USD Invoice Amount"] = formatAmount(
+                currency.THB,
+                request.usdInvoiceAmount
+            );
+            pi["THB Invoice Amount"] = formatAmount(
+                currency.USD,
+                request.thbInvoiceAmount
+            );
+            pi["Payment Amount"] = formatAmount(
+                currency.THB,
+                request.paymentAmount
+            );
             pi["Request Justification"] = request.requestJustification;
-            pi["Entered By"] = request.enteredBy;
+            //pi["Entered By"] = request.enteredBy;
             pi["Account Payable"] = request.accountPayable;
             pi["Supplier"] = request.supplier;
-            pi["Reviewed By"] = request.reviewedBy;
-            pi["Created Time"] = Moment(
-                Moment.now(),
+            //pi["Reviewed By"] = request.reviewedBy;
+            pi["Created Time"] = Moment(Moment.now()).format(
                 "D MMMM YYYY h:mma"
-            ).toString();
+            );
 
             const toReturn = {
                 fields: pi

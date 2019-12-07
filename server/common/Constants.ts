@@ -5,3 +5,8 @@ export const httpStatus = {
     notFound: 404,
     internalServerError: 500
 };
+
+export enum currency {
+    THB,
+    USD
+}

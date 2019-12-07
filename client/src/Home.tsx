@@ -20,11 +20,11 @@ const Home: React.FC = () => {
     );
 
     return (
-        <React.Fragment>
+        <>
             <Header />
             <Content>{renderContentTabs()}</Content>
             <Footer>Footer</Footer>
-        </React.Fragment>
+        </>
     );
 };
 

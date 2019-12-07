@@ -47,6 +47,7 @@ export default interface PurchaseItem {
     advancedClearingReceivableItems: string;
     reimburseItemReceivableItems: string;
     auditedBy: string;
+    missingReceipt: boolean;
 }
 
 type Category = "Services" | "Hotel and Accommodation" | "Travel";

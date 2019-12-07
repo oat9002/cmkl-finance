@@ -1,12 +1,13 @@
-import IAirtableService, {
+import {
     AirtableFetchRequest,
-    AirtableInsertRequest
+    AirtableInsertRequest,
+    AirtableService
 } from "./interfaces/AirtableService";
 import IServiceConnector from "./interfaces/ServiceConnector";
 import ServiceConnector from "./ServiceConnector";
 import PurchaseItem from "../models/PurchanseItem";
 
-class AirtableService implements IAirtableService {
+class AirtableServiceImpl implements AirtableService {
     private airtable: any;
 
     public constructor() {
@@ -30,8 +31,8 @@ class AirtableService implements IAirtableService {
     public insertPurchaseItems(
         request: AirtableInsertRequest<PurchaseItem>
     ): any {
-        return this.airtable("Purchase Items").create(request);
+        return this.airtable("Purchase Items").create([request]);
     }
 }
 
-export default AirtableService;
+export default AirtableServiceImpl;
