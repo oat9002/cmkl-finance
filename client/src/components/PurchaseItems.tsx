@@ -15,6 +15,11 @@ function PurchaseItems() {
     ] = React.useState(false);
 
     React.useEffect(() => {
+        fetchDataFormServer();
+    }, []);
+
+    const fetchDataFormServer = () => {
+        setLoading(true);
         getPurchaseItems({
             option: {
                 maxRecords: 100,
@@ -30,7 +35,7 @@ function PurchaseItems() {
                 setLoading(false);
                 console.log(err);
             });
-    }, []);
+    };
 
     const onAddPurchaseItemClick = () => {
         setIsShowAddPurchaseItemModal(true);
@@ -139,6 +144,7 @@ function PurchaseItems() {
             <AddPurchaseItemModal
                 visible={isShowAddPurchaseItemModal}
                 setVisible={addPurchaseItemModalVisileHandler}
+                fetchDataWhenConfirm={fetchDataFormServer}
             />
             <Table
                 columns={tableHeader}

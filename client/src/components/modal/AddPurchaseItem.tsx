@@ -2,13 +2,14 @@ import * as React from "react";
 import { Modal, Alert } from "antd";
 import InsertPurchaseItemsRequest from "../../models/requests/InsertPurchaseItemsRequest";
 import { insertPurchaseItems } from "../../services/PurchseItemsService";
-import { removeTimeFromDate } from "../../services/Utils";
+import { removeTimeFromDate, parseInputNumber } from "../../services/Utils";
 import AddPurchaseItemForm from "../form/AddPurchaseItemForm/AddPurchaseItemForm";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 
 export interface AddPurchaseItemProps {
     visible: boolean;
     setVisible: (isVisible: boolean) => void;
+    fetchDataWhenConfirm: () => void;
 }
 
 const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
@@ -44,6 +45,8 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
 
                 if (isSuccess) {
                     props.setVisible(false);
+                    props.fetchDataWhenConfirm();
+                    formRef.resetFields();
                 } else {
                     setIsAlert(true);
                 }
@@ -80,13 +83,14 @@ const AddPurchaseItem: React.FC<AddPurchaseItemProps> = props => {
 };
 
 function mapRequest(data: any): InsertPurchaseItemsRequest {
+    console.log(data);
     return {
         shortDescription: data.shortDescription,
         missingReceipt: data.missingReceipt,
         paymentDueDate: removeTimeFromDate(data.paymentDueDate.toDate()),
-        usdInvoiceAmount: data.usdInvoiceAmount,
-        thbInvoiceAmount: data.thbInvoiceAmount,
-        paymentAmount: data.paymentAmount,
+        usdInvoiceAmount: parseInputNumber(data.usdInvoiceAmount),
+        thbInvoiceAmount: parseInputNumber(data.thbInvoiceAmount),
+        paymentAmount: parseInputNumber(data.paymentAmount),
         requestJustification: data.requestJustification,
         enteredBy: undefined,
         accountPayable: data.accountPayable,

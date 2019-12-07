@@ -24,3 +24,16 @@ export function removeTimeFromDate(date: Date): Date {
         0
     );
 }
+
+export function parseInputNumber(data: string | number): number {
+    try {
+        if (typeof data === "number") {
+            return data;
+        }
+
+        const toReturn = data.replace(",", "");
+        return Number.parseFloat(toReturn);
+    } catch (err) {
+        throw new Error(`Cannot parse to float: ${data}`);
+    }
+}

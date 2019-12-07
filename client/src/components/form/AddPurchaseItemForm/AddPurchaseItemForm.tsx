@@ -11,8 +11,6 @@ const formItemLayout = {
 };
 const checkError = (form: WrappedFormUtils) => (field: string) =>
     !!form.getFieldError(field);
-const formatNumber = (value: string | number | undefined) =>
-    value ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "";
 
 type AddPurchaseItemFormProps = {
     children?: React.ReactNode;
@@ -95,7 +93,9 @@ const MissingReceiptInput: React.FC = () => {
         <FormConsumer>
             {form => (
                 <Form.Item label="Missing Receipt" {...formItemLayout}>
-                    {form.getFieldDecorator("missingReceipt")(<Checkbox />)}
+                    {form.getFieldDecorator("missingReceipt", {
+                        valuePropName: "checked"
+                    })(<Checkbox />)}
                 </Form.Item>
             )}
         </FormConsumer>
@@ -116,7 +116,6 @@ const PaymentDueDateInput: React.FC = () => {
                     {...formItemLayout}
                 >
                     {form.getFieldDecorator("paymentDueDate", {
-                        validateTrigger: "onBlur",
                         rules: [
                             {
                                 required: true,
@@ -136,7 +135,7 @@ const UsdInvoiceAmountInput: React.FC = () => {
             {form => (
                 <Form.Item label="USD Invoice Amount" {...formItemLayout}>
                     {form.getFieldDecorator("usdInvoiceAmount")(
-                        <InputNumber min={0} formatter={formatNumber} />
+                        <InputNumber min={0} />
                     )}
                 </Form.Item>
             )}
@@ -150,7 +149,7 @@ const ThbInvoiceAmountInput: React.FC = () => {
             {form => (
                 <Form.Item label="THB Invoice Amount" {...formItemLayout}>
                     {form.getFieldDecorator("thbInvoiceAmount")(
-                        <InputNumber min={0} formatter={formatNumber} />
+                        <InputNumber min={0} />
                     )}
                 </Form.Item>
             )}
@@ -179,7 +178,7 @@ const PaymentAmountInput: React.FC = () => {
                                 message: "Please fill in your payment amount!"
                             }
                         ]
-                    })(<InputNumber min={0} formatter={formatNumber} />)}
+                    })(<InputNumber min={0} />)}
                 </Form.Item>
             )}
         </FormConsumer>
