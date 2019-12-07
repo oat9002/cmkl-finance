@@ -75,6 +75,7 @@ const ShortDescriptionInput: React.FC = () => {
                     {...formItemLayout}
                 >
                     {form.getFieldDecorator("shortDescription", {
+                        validateTrigger: "onBlur",
                         rules: [
                             {
                                 required: true,
@@ -115,6 +116,7 @@ const PaymentDueDateInput: React.FC = () => {
                     {...formItemLayout}
                 >
                     {form.getFieldDecorator("paymentDueDate", {
+                        validateTrigger: "onBlur",
                         rules: [
                             {
                                 required: true,
@@ -170,6 +172,7 @@ const PaymentAmountInput: React.FC = () => {
                     {...formItemLayout}
                 >
                     {form.getFieldDecorator("paymentAmount", {
+                        validateTrigger: "onBlur",
                         rules: [
                             {
                                 required: true,
@@ -199,6 +202,7 @@ const RequestJustificationInput: React.FC = () => {
                     {...formItemLayout}
                 >
                     {form.getFieldDecorator("requestJustification", {
+                        validateTrigger: "onBlur",
                         rules: [
                             {
                                 required: true,
@@ -206,7 +210,7 @@ const RequestJustificationInput: React.FC = () => {
                                     "Please fill in your requested justification!"
                             }
                         ]
-                    })(<TextArea />)}
+                    })(<TextArea rows={5} />)}
                 </Form.Item>
             )}
         </FormConsumer>
@@ -217,7 +221,7 @@ const EnteredByInput: React.FC = () => {
     return (
         <FormConsumer>
             {form => (
-                <Form.Item label="Entered by">
+                <Form.Item label="Entered by" {...formItemLayout}>
                     {form.getFieldDecorator("enteredBy")(<Input />)}
                 </Form.Item>
             )}
@@ -239,6 +243,7 @@ const AccountPayableInput: React.FC = () => {
                     {...formItemLayout}
                 >
                     {form.getFieldDecorator("accountPayable", {
+                        validateTrigger: "onBlur",
                         rules: [
                             {
                                 required: true,
@@ -252,7 +257,7 @@ const AccountPayableInput: React.FC = () => {
     );
 };
 
-const SupplierInput: React.Fc = () => {
+const SupplierInput: React.FC = () => {
     return (
         <FormConsumer>
             {form => (
