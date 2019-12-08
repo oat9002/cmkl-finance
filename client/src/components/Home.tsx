@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout, Tabs } from "antd";
-import Header from "./components/Header";
-import PurchaseItems from "./components/PurchaseItems";
+import Header from "./Header";
+import PurchaseItems from "./PurchaseItems";
 
 const { Footer, Content } = Layout;
 const { TabPane } = Tabs;
